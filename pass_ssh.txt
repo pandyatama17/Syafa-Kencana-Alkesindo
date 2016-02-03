@@ -1,0 +1,25 @@
+d45aR6iL@!
+
+103.247.11.31
+
+ssh key
+
+Generating public/private dsa key pair.
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in /home/syap7633/.ssh/id_rsa.
+Your public key has been saved in /home/syap7633/.ssh/id_rsa.pub.
+The key fingerprint is:
+83:3a:1a:dd:05:b7:4a:21:ae:ff:0e:29:91:ad:dc:f0
+The key's randomart image is:
++--[ DSA 1024]----+
+|                 |
+|                 |
+|    . o .        |
+|   + . = .       |
+|  + o o S        |
+| . O = o .       |
+|  * E o          |
+|   = o           |
+|  . .oo          |
++-----------------+
