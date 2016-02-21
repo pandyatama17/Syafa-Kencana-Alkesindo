@@ -68,5 +68,62 @@
 
 
 </body>
+<script type="text/javascript">
+$('#DeleteItemForm').validate(
+   {
+        rules:
+        {
+            id:
+            {
+                    required: true
+            },
 
+        },
+        highlight: function(label)
+        {
+            $(label).closest().addClass('error');
+        },
+        success: function(label)
+        {
+            label.closest().addClass('success');
+        },
+        submitHandler: function(form)
+        {
+            if ($(form).valid())
+            {
+               $(form).ajaxSubmit(
+               {
+                    url:$(this).attr('action'),
+                    type: 'GET',
+                    data: $(this).serialize(),
+                    success: function(data)
+                    {
+                        var obj = jQuery.parseJSON(data);
+                        if(obj.err == false)
+                        {
+                            swal(
+                            {
+                                title: "Success!",
+                                text: obj.msg,
+                                type: "success",
+                                confirmButtonColor: "#0288d1",
+                                confirmButtonText: "Ok!",
+                                closeOnConfirm: false
+                            },
+                            function()
+                            {
+                                location.replace('/storage/list');
+                            });
+                            }
+                            else
+                            {
+                                swal("Opps!", obj.msg, "error");
+                            }
+                        }
+                    })
+                    return false;
+               }
+            }
+        });
+</script>
 </html>
