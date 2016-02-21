@@ -51,7 +51,7 @@
                                 <tr>
                                    <td>Invoice #</td>
                                   <td>:</td>
-                                  <td><input type="text"  class="simplized" style=" width:75%;" name="parent_id" id="parent_id" required="true"> <br></td>
+                                  <td><input type="text"  class="simplized" style=" width:75%;" name="parent_id" id="parent_id" required="true" @if(isset($iv)) value="{{$iv->id}}" @endif> <br></td>
                                </tr>
                                <tr>
                                   <td>Created</td>
