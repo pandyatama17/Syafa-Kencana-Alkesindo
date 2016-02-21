@@ -24,17 +24,11 @@
     <meta charset="utf-8">
     <title>Invoice</title>
 <link rel="stylesheet" href="/css/reports.css" media="screen" title="no title" charset="utf-8">
-    <?php
-    //data control
-    $items =explode(",", trim($iv->items_id_array,","));
-    $qtys =explode(",", trim($iv->items_qty_array,","));
-    $ct = count($items);
-    $keepcount = $ct;
-    unset($qtys[($keepcount - 1)]);
-     ?>
+
 </head>
 
 <body>
+   <br> <br> <br>
     <div class="PrintArea area1 all" id="InvoiceArea">
     <div class="invoice-box">
         <table cellpadding="0" cellspacing="0">
@@ -86,7 +80,7 @@
                 <td>{{DB::table('user')->where('id',$iv->sales)->pluck('name')}}</td>
                 <td>{{$iv->delivery_date}}</td>
                 <td>{{$iv->payment}}</td>
-                <td>{{$iv->due}}</td>
+                <td>{{$iv->due_date}}</td>
             </tr>
 
 
@@ -97,31 +91,18 @@
                 <td>Qty</td>
                 <td>Harga Satuan</td>
                 <td>Discount</td>
-                <td>Jumlah</td>
+                <td>Subtotal</td>
             </tr>
-            <?php $t = "0"; $grandtotal = "0" ?>
-            @foreach($items as $item)
-              {{-- @for ($i = 0; $i < $ct; $i++) --}}
-              <?php if (--$ct <= 0) {
-                      break;}
-              ?>
-              <?php
-                $pctot = $qtys[$t] * DB::table('item')->where('id',$item)->pluck('resell_price');
-                $subtotal = number_format ($pctot, 2, ',', '.');
-                $price = number_format (DB::table('item')->where('id',$item)->pluck('resell_price'), 2, ',', '.');
-                $grandtotal = $grandtotal + $pctot;
-              ?>
-              <tr class="item">
-                  <td>{{$t+1}}</td>
-                  <td>{{DB::table('item')->where('id',$item)->pluck('id')}}</td>
-                  <td>{{DB::table('item')->where('id',$item)->pluck('item_name')}}</td>
-                  <td>{{$qtys[$t]}}</td>
-                  <td>Rp. {{$price}}</td>
-                  <td>0</td>
-                  <td>Rp. {{$subtotal}}</td>
-              </tr>
-              {{-- @endfor --}}
-              <?php $t = $t + 1 ?>
+            @foreach($ivchilds as $child)
+               <tr>
+                  <td>{{$child->id}}</td>
+                  <td>{{$child->item_id}}</td>
+                  <td>{{DB::table('item')->where('id', $child->item_id)->pluck('item_name')}}</td>
+                  <td>{{$child->qty}} item</td>
+                  <td class="itemprice">{{DB::table('item')->where('id', $child->item_id)->pluck('resell_price')}}</td>
+                  <td>{{$child->discount}}%</td>
+                  <td class="subtotal">{{$child->subtotal}}</td>
+               </tr>
             @endforeach
 
             <tr class="item last">
@@ -129,9 +110,10 @@
             </tr>
 
             <tr class="total">
-              <?php $gt = number_format ($grandtotal, 2, ',', '.');?>
+
                 <td></td><td></td><td></td><td></td><td></td><td>Total: </td>
-                <td>Rp. {{$gt}},-</td>
+                <td id="invoicetotal">{{$total}}</td>
+                {{-- <td>Rp. {{$ptg->total}},-</td> --}}
             </tr>
         </table>
         <div class="clear"></div>
@@ -153,8 +135,33 @@
     </div>
 </div>
     <script>
+      function rupiah(nStr)
+      {
+         nStr += '';
+         x = nStr.split('.');
+         x1 = x[0];
+         x2 = x.length > 1 ? '.' + x[1] : '';
+         var rgx = /(\d+)(\d{3})/;
+         while (rgx.test(x1))
+         {
+           x1 = x1.replace(rgx, '$1' + '.' + '$2');
+         }
+         return "Rp. " + x1 + x2 +",00";
+      }
       $(document).ready(function(){
 
+         $(".itemprice").text(function()
+         {
+            $(this).text(rupiah($(this).text()));
+         });
+         $(".subtotal").text(function()
+         {
+            $(this).text(rupiah($(this).text()));
+         });
+         $("#invoicetotal").text(function()
+         {
+            $(this).text(rupiah($(this).text()));
+         });
           $("#printBtn").on('click',function functionName()
           {
               $("#InvoiceArea").printArea({
@@ -174,8 +181,3 @@
     </script>
 </body>
 </html>
-
-<script type="text/javascript">
-  // var totaldata = {{$keepcount - 1}};
-  // alert(totaldata);
-</script>

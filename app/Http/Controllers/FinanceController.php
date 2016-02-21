@@ -90,7 +90,7 @@ class FinanceCOntroller extends Controller {
 	public function showInvoice($id)
 	{
 		$iv = ItemOut::find($id);
-        return view('reports.invoice',array('iv'=>$iv));
+       return view('reports.invoice',array('iv'=>$iv));
 	}
 	public function srcInvoice()
 	{

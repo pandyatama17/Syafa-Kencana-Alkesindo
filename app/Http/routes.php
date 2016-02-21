@@ -52,7 +52,9 @@ Route::post('/storage/out/keluaringihsono', 'ItemController@itemOut');
 Route::any('/storage/DO', 'ItemController@createDO');
 Route::get('/storage/DO/{id}',"ItemController@getItemsForDO");
 Route::post('/storage/DO/store',"ItemController@storeDO");
-
+Route::get('/storage/show/{id}', 'ItemController@show');
+Route::post('/storage/update/', 'ItemController@update');
+Route::get('/storage/delete', 'ItemController@destroy');
 
 Route::any('/finance',"FinanceController@index");
 Route::any('/finance/invoice',"FinanceController@createInvoice");
@@ -68,3 +70,16 @@ Route::any('/sampDO','MainController@sampDO');
 Route::get('/showDO/{id}','ItemController@showDO');
 
 Route::get('/storage/restock/{id}','ItemController@restockItem');
+
+Route::any('/invoice/create', 'InvoiceController@createInvoice');
+Route::any('/invoice/createOLD', 'InvoiceController@old');
+Route::any('/invoice/store', 'InvoiceController@storeInvoice');
+Route::get('/storage/itemAsJSON/{id}', 'InvoiceController@getItemData');
+Route::get('/invoice/changedatavalue={id}', 'InvoiceController@changedatavalue');
+Route::any('/invoice',"InvoiceController@index");
+Route::get('/invoice/show/{id}', 'InvoiceController@show');
+
+Route::any('/deliveryorder/create', 'DOController@create');
+Route::any('/deliveryorder/create/base/{id}', 'DOController@createWithInvoice');
+Route::any('/deliveryorder/create/itembase/{id}', 'DOController@createWithItem');
+Route::post('/deliveryorder/store', 'DOController@store');

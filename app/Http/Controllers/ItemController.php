@@ -9,6 +9,7 @@ use App\Transaction;
 use App\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
+use File;
 
 class ItemController extends Controller {
 
@@ -92,6 +93,15 @@ class ItemController extends Controller {
 	{
 			$ip = Input::all();
 
+			if (Input::hasFile('image'))
+			{
+				$file     = Input::file('image');
+				$filename = $ip['id'].'.'.$file->getClientOriginalExtension();
+
+				$destinationPath = public_path().'/img/item';
+			    $file->move($destinationPath, $filename);
+
+			}
 			$it = new Item;
 			$it->id = $ip['id'];
 			$it->item_name = $ip['name'];
@@ -100,6 +110,7 @@ class ItemController extends Controller {
 			$it->supplier_price = $ip['supplier_price'];
 			$it->resell_price = $ip['resell_price'];
 			$it->last_restock_date = $ip['transaction_date'];
+			$it->image = $filename;
 
 			if ($it->qty != 0)
 			{
@@ -239,7 +250,7 @@ class ItemController extends Controller {
 		 $items = Transaction::where('PO_DO_id', $id)->get();
          echo json_encode($items);
      }
-	
+
 	public function storeDO()
 	{
         $input = Input::all();
@@ -284,7 +295,67 @@ class ItemController extends Controller {
 	public function restockItem($id)
 	{
 		$item = Item::find($id);
-		return view('item.restock',array('page'=>'restock','item'=>$item));
+		$items = Item::all();
+		return view('item.restock',array('page'=>'restock','item'=>$item,'items'=>$items));
 	}
+	public function show($id)
+	{
+		$it = Item::find($id);
+		$sups = SUpplier::all();
+		$selectedsup = Supplier::find($it->supplier_id);
+		return view('item.show',array('item'=>$it,'suppliers'=>$sups,'supplier'=>$selectedsup));
+	}
+	public function update()
+	{
+			$ip = Input::all();
 
+
+			$it = Item::find($ip['oldid']);
+			$it->id = $ip['newid'];
+			$it->item_name = $ip['name'];
+			// $it->qty = $ip['qty'];
+			$it->supplier_id = $ip['supplier'];
+			$it->supplier_price = $ip['supplier_price'];
+			$it->resell_price = $ip['resell_price'];
+			// $it->last_restock_date = $ip['transaction_date'];
+
+			if (Input::hasFile('image'))
+			{
+				$file     = Input::file('image');
+				$filename = $ip['id'].'.'.$file->getClientOriginalExtension();
+				$destinationPath = public_path().'/img/item';
+				$file->move($destinationPath, $filename);
+
+				$it->image = $filename;
+			}
+			try
+			{
+					$it->save();
+
+					$arr = array('err'=>false,'msg'=>'Item details updated','itemid'=>$it->id);
+					echo json_encode($arr);
+			}
+			catch (Exception $e)
+			{
+				$arr = array('err'=>true,'msg'=>'Invalid Proccess.');
+				echo json_encode($arr);
+			}
+
+	}
+	public function destroy(Request $req)
+	{
+		$it = Item::find($req->id);
+		try
+		{
+				$it->delete();
+
+				$arr = array('err'=>false,'msg'=>'Item Deleted');
+				echo json_encode($arr);
+		}
+		catch (Exception $e)
+		{
+			$arr = array('err'=>true,'msg'=>'Invalid Proccess.');
+			echo json_encode($arr);
+		}
+	}
 }

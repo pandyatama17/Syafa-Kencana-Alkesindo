@@ -4,11 +4,6 @@
     <link href="/materialize/css/ghpages-materialize.css" type="text/css" rel="stylesheet" media="screen,projection">
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-    <link href="/materialize/dist/font/material-design-icons/Material-Design-Icons.eot" rel="stylesheet">
-    <link href="/materialize/dist/font/material-design-icons/Material-Design-Icons.svg" rel="stylesheet">
-    <link href="/materialize/dist/font/material-design-icons/Material-Design-Icons.ttf" rel="stylesheet">
-    <link href="/materialize/dist/font/material-design-icons/Material-Design-Icons.woff" rel="stylesheet">
-    <link href="/materialize/dist/font/material-design-icons/Material-Design-Icons.woff2" rel="stylesheet">
 
       <!--Import materialize.css-->
 
@@ -52,13 +47,13 @@
           <li><a href="/storage/DO">DO baru</a></li>
         </ul>
         <ul id="dropdown3" class="dropdown-content">
-            <li><a href="/finance/invoice">Invoice Baru</a></li>
+            <li><a href="/invoice/create">Invoice Baru</a></li>
             <li><a href="/finance/invoices">Data Invoice</a></li>
           <li class="divider"></li>
         </ul>
         <nav>
           <div class="nav-wrapper">
-            <a href="/" class="brand-logo" style="margin-left:20px"><img src="/SKA.png"></a>
+            <a href="/" class="brand-logo" style="margin-left:20px;"><img src="/SKA_Logo.png" style=" height:100%"></a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
               <li class="linav">
 

@@ -1,50 +1,72 @@
-@extends('header')
+<!DOCTYPE html>
+<html>
 
-@section('content')
-<style>
-  form {
-	width: 380px;
-	margin: 4em auto;
-  padding-top: 20px;
-	padding: 3px;
-	background: #fafafa;
-	border: 1px solid #ebebeb;
-	box-shadow: rgba(0,0,0,0.14902) 0px 1px 1px 0px,rgba(0,0,0,0.09804) 0px 1px 2px 0px;
-  height: 360px;
-}
-</style>
-<div class="row">
-  @if(Session::has('message'))
-    <div class="col s12 alert alert-<?php echo Session::get('status');?> alert-dismissable">
-      {{ Session::get('message') }}
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>INSPINIA | Login</title>
+
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/font-awesome/css/font-awesome.css" rel="stylesheet">
+
+    <link href="/assets/css/animate.css" rel="stylesheet">
+    <link href="/assets/css/style.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="/plugins/sf-flash/jquery.sf-flash.min.css" media="screen" title="no title" charset="utf-8">
+    <!-- Mainly scripts -->
+    <script src="/assets/js/jquery-2.1.1.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/plugins/sf-flash/jquery.sf-flash.min.js" charset="utf-8"></script>
+</head>
+
+<body class="gray-bg">
+
+    <div class="middle-box text-center loginscreen  animated fadeInDown">
+        <div>
+            <div>
+
+                <h1 class="logo-name"><img src="/SKA_Logo.png" alt="Syafa Kencana Alkesindo" /></h1>
+
+            </div>
+            <h3>Selamat Datang</h3>
+            @if(Session::has('message'))
+               <div class="alert alert-danger alert-dismissable">
+                  <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                  {{Session::get('message')}}.
+               </div>
+              <script type="text/javascript">
+              $(function() {
+                 $('.sf-flash').sfFlash();
+                $('body').append('<div class="sf-flash">{{Session::get('message')}}.</div>');
+
+              });
+              </script>
+            @endif
+                <!--Continually expanded and constantly improved Inspinia Admin Them (IN+)-->
+            </p>
+            <p>Silahkan login terlebih dahulu untuk mengakses fitur yang ada</p>
+            <form class="m-t" role="form" action="{!! action('UserController@doLogin') !!}">
+                <div class="form-group">
+                    <input type="text" name="username" class="form-control" placeholder="Username" required="">
+                </div>
+                <div class="form-group">
+                    <input type="password" name="password" class="form-control" placeholder="Password" required="">
+                </div>
+                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
+                <button type="submit" class="btn btn-primary block full-width m-b">Login</button>
+
+                {{-- <a href="/assets/assets/#"><small>Forgot password?</small></a> --}}
+                {{-- <p class="text-muted text-center"><small>Do not have an account?</small></p> --}}
+                {{-- <a class="btn btn-sm btn-white btn-block" href="/assets/assets/register.html">Create an account</a> --}}
+            </form>
+            <p class="m-t"> <small>Inspinia we app framework base on Bootstrap 3 &copy; 2014</small> </p>
+        </div>
     </div>
-  @endif
-  <div class="col s12">&nbsp;</div>
-  <div class="col s4">&nbsp;</div>
-  <form class="col s4" action="{!! action('UserController@doLogin') !!}" role="form" method="post">
-    <div class="row">
-      <div class="col s1">&nbsp;</div>
-      <h4 class="header">Login</h4>
-      <div class="divider"></div>
-      <div class="col s12">&nbsp;</div>
-      <div class="col s1">&nbsp;</div>
-      <input type="hidden" name="_token" value="{{ csrf_token() }}">
-      <div class="input-field col s10">
-        <input id="username" name="username" type="text" class="validate">
-        <label for="username">Username</label>
-      </div>
-      <div class="clear"></div>
-      <div class="col s1">&nbsp;</div>
-      <div class="input-field col s10">
-        <input id="password" name="password" type="password" class="validate">
-        <label for="password">Password</label>
-      </div>
-    </div>
-    <div class="col s12">&nbsp;</div>
-    <div class="col s12">&nbsp;</div>
-    <button class="btn waves-effect waves-light" type="submit" name="action" style="margin-bottom:20px; float:right; margin-right:20px">
-      Login<i class="material-icons right">lock</i>
-    </button>
-  </form>
-</div>
-@endsection
+
+
+</body>
+
+</html>

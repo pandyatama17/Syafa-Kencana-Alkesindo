@@ -29,37 +29,42 @@ class UserController extends Controller {
 		{
 			return Redirect::to(action('UserController@showLogin'))
 			->with('message', 'User not found')
-			->with('status', 'danger')
 			->withInput(Input::except('password')); // send back the input (not the password) so that we can repopulate the form
 		}
 
 				// attempt to do the login
 				// if (str_replace(' ','',$user->password) == sha1(Input::get('password'))) {
-					if($user->password == Input::get('password')){
-					Session::put('user',$user);
+					if($user->password == Input::get('password'))
+					{
+						Session::put('user',$user);
 
 
-					if($user->user_level == 'gudang')
-					{
-						return Redirect::to('/storage');
-					}
-					elseif ($user->user_level == 'owner')
-					{
-						return Redirect::to('/');
-						# code...
-					}
-					elseif ($user->user_level == 'admin')
-					{
-						return Redirect::to('/finance');
-						# code...
-					}
+						if($user->user_level == 'gudang')
+						{
+							return Redirect::to('/storage');
 						}
+						elseif ($user->user_level == 'owner')
+						{
+							return Redirect::to('/');
+							# code...
+						}
+						elseif ($user->user_level == 'admin')
+						{
+							return Redirect::to('/finance');
+							# code...
+						}
+					}
+					else {
+						return Redirect::to(action('UserController@showLogin'))
+						->with('message', 'Wrong Password')
+						->withInput(Input::except('password'));
+					}
 	}
 	public function logout()
 	{
 		# code...
 		Session::forget('user');
-		return Redirect::to('/');
+		return Redirect::to('/login');
 	}
 	public function index()
 	{
