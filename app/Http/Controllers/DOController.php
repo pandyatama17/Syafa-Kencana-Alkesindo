@@ -14,6 +14,7 @@ use App\InvoiceChild;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Redirect;
+use DB;
 
 class DOController extends Controller {
 
@@ -44,6 +45,20 @@ class DOController extends Controller {
 	{
 		$sales = User::where('user_level','=','sales')->get();
 		$items = Item::all();
+		$iv  = InvoiceParent::find($id);
+		// print_r($items);
+		// return $items;
+		$childs = InvoiceChild::where('parent_id',$iv->id)->get();
+		$countchild = DB::table('invoice_child')->where('parent_id',$iv->id)->count();
+		$total = DB::table('piutang')->where('invoice_parent_id', $iv->id)->pluck('total');
+		return view('DO.add',array('sales'=>$sales))->with('items', $items)->with('id', $id)->with('iv', $iv)->with('countchild', $countchild)->with('child', $childs)->with('invoicetotal', $total);
+		// return $total	;
+	}
+	public function createWithItem($id)
+	{
+		$sales = User::where('user_level','=','sales')->get();
+		$items = Item::all();
+		$item = Item::find($id);
 		$iv  = InvoiceParent::find($id);
 		// print_r($items);
 		// return $items;

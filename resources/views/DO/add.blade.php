@@ -10,14 +10,14 @@
     <script type="text/javascript" src="/swal/dist/sweetalert.min.js"></script>
     <script type="text/javascript" src="/chosen/chosen.jquery.min.js"></script>
     <link rel="stylesheet" href="/chosen/chosen.css" media="screen,print"charset="utf-8">
-    <link rel="stylesheet" href="swal/dist/sweetalert.css" media="screen" title="no title" charset="utf-8">
+    <link rel="stylesheet" href="/swal/dist/sweetalert.css" media="screen" title="no title" charset="utf-8">
     <script src="/jquery.validate.min.js" charset="utf-8"></script>
     <script src="/jquery.form.js" charset="utf-8"></script>
 
-    <nav style="background:#ef5350; margin:-8px; height:50px; padding:10px; padding-bottom:0px; font-family: Roboto">
+    <nav style="background:#2c3e50; margin:-8px; height:50px; padding:10px; padding-bottom:0px; font-family: Roboto">
         <div class="nav-wrapper" >
             <a href="/" style="margin-left:20px; font-family: Arial; text-decoration:none; color:white; font-size:20pt">Delivery Order</a>
-            <button type="button" name="button" class="button" style="float:right" id="SaveBtn">Save</button>
+            <button type="button" name="button" class="button green" style="float:right" id="SaveBtn">Save</button>
          </div>
     </nav>
     {{-- <link type="text/css" rel="stylesheet" href="PrintArea.css" /> --}}
@@ -34,6 +34,7 @@
     </style>
 </head>
 <body>
+
     <form id="InvoiceForm" action="{{action('DOController@store')}}" method="post">
     <div class="invoice-box">
         <table cellpadding="0" cellspacing="0">
@@ -57,7 +58,7 @@
                                   <td>Created</td>
                                   <td>:</td>
                                   <td>
-                                     <input type="date" id="invoice_date" class="simplized" style=" width:75%;" name="invoice_date" value="" required> <br>
+                                     <input type="date" id="invoice_date" class="simplized" style=" width:75%;" name="invoice_date" required @if(isset($iv)) value="{{$iv->invoice_date}}" @endif> <br>
                                   </td>
                                </tr>
                             </table>
@@ -153,10 +154,10 @@
                             <td>
                               Kepada Yth,<br>
 
-                             <input type="text" class="simplized" name="client_name" value="" placeholder="Client Name" @if(isset($iv)) value="{{$iv->client_name}}" @endif>
+                             <input type="text" class="simplized" name="client_name" placeholder="Client Name" @if(isset($iv)) value="{{$iv->client_name}}" @endif>
                              <br>
                              <br>
-                             <textarea class="simplized" name="client_address" rows="2" cols="10" placeholder="Client Address"></textarea>
+                             <textarea class="simplized" name="client_address" rows="2" cols="10" placeholder="Client Address">@if(isset($iv)){{$iv->client_address}} @endif</textarea>
                             </td>
                         </tr>
                     </table>
@@ -175,19 +176,23 @@
                     <select class="simplized chosen" name="sales" required="true">
                         <option value="" selected disabled>Pilih Sales</option>
                             @foreach($sales as $res)
-                                    <option value="{{$res->id}}">{{$res->name}}</option>
+                               @if(isset($iv) && $res->id == $iv->sales)
+                                  <option selected value="{{$res->id}}">{{$res->name}}</option>
+                               @else
+                                 <option value="{{$res->id}}">{{$res->name}}</option>
+                              @endif
                             @endforeach
                     </select class="simplized">
                 </td>
-                <td><input class="simplized" type="date" name="delivery_date" class="datepicker" style="width:90%" required></td>
+                <td><input class="simplized" type="date" name="delivery_date" class="datepicker" style="width:90%" required @if(isset($iv))value="{{$iv->delivery_date}}" @endif></td>
                 <td colspan="2" style="width:100px">
                     <select class="simplized normal" required name="payment">
                         <option value="" selected disabled>Pilih Jenis Pembayaran</option>
-                        <option value="Transfer">Transfer</option>
-                        <option value="Cash">Cash</option>
+                        <option @if(isset($iv) && $iv->payment == 'transfer') selected @endif value="transfer">Transfer</option>
+                        <option @if(isset($iv) && $iv->payment == 'cash') selected @endif value="cash">Cash</option>
                     </select class="simplized">
                 </td>
-                <td><input class="simplized" type="date" name="due_date" id="due2" class="datepicker" style="width:90%" required></td>
+                <td><input class="simplized" type="date" name="due_date" id="due2" class="datepicker" style="width:90%" required @if(isset($iv))value="{{$iv->due_date}}" @endif></td>
 
             </tr>
             <tr class="heading">
@@ -205,19 +210,47 @@
                 <tr class="item" id="item{{$i}}">
                     <td>{{$i}}</td>
                     <td>
-                        <select class="simplized chosen" name="item{{$i}}" onchange="getItem{{$i}}(this.value)" style="width:180px">
+                        <select class="simplized chosen" name="item{{$i}}" id="itemSelect{{$i}}" onchange="getItem{{$i}}(this.value)" style="width:180px">
                             <option value="" selected disabled>Pilih Barang</option>
                             @foreach($items as $res)
-                                <option value="{!!$res->id!!}">{!!$res->id!!}</option>
+                               @if(isset($child[$i-1]) && $res->id == $child[$i-1]->item_id)
+                                  <option selected value="{!!$res->id!!}">{!!$res->id!!}</option>
+                                  @else
+                                     <option value="{!!$res->id!!}">{!!$res->id!!}</option>
+                               @endif
                             @endforeach
                         </select>
                     </td>
-                    <td id="namecolumn{{$i}}" style="line-height:20px;text-align:center"></td>
-                    <td id="qtycolumn{{$i}}"></td>
-                    <td id="pricecolumn{{$i}}" style="width:100px"></td>
-                    <td id="discountcolumn{{$i}}"></td>
-                    <td id="subtotalcolumn{{$i}}"></td>
-                    <td id="HiddenCont{{$i}}" style="display:none"></td>
+                    <td id="namecolumn{{$i}}" style="line-height:20px;text-align:center">
+                       @if(isset($child[$i-1]))
+                          {{DB::table('item')->where('id',$child[$i-1]->item_id )->pluck('item_name')}}
+                       @endif
+                    </td>
+                    <td id="qtycolumn{{$i}}">
+                       @if(isset($child[$i-1]))
+                          <input class="simplized" type="number" name="qty{{$i}}" min="1" max="'+responseText.qty+'" style="width:70%" id="qty{{$i}}" value="{{$child[$i-1]->qty}}" onchange="ctsub{{$i}}(this.value)">
+                       @endif
+                    </td>
+                    <td id="pricecolumn{{$i}}" style="width:100px">
+                       @if(isset($child[$i-1]))
+                          Rp. {{number_format (DB::table('item')->where('id',$child[$i-1]->item_id )->pluck('resell_price'), 2, ',', '.')}}
+                       @endif
+                    </td>
+                    <td id="discountcolumn{{$i}}">
+                       @if(isset($child[$i-1]))
+                          <input class="simplized" type="number" name="discount{{$i}}" min="0" max="99" style="width:60%" id="discount{{$i}}" value="{{$child[$i-1]->discount}}" onchange="ctsub{{$i}}(this.value)">%
+                       @endif
+                    </td>
+                    <td id="subtotalcolumn{{$i}}">
+                       @if(isset($child[$i-1]))
+                          Rp. {{number_format ($child[$i-1]->subtotal, 2, ',', '.')}}
+                       @endif</td>
+                    <td id="HiddenCont{{$i}}" style="display:none">
+                       @if(isset($child[$i-1]))
+                          <input type="text" style="display:none" id="price{{$i}}" name="price{{$i}}" value="{{DB::table('item')->where('id',$child[$i-1]->item_id )->pluck('resell_price')}}">
+                          <input type="text" style="display:none" name="subtotal{{$i}}" id="subtotal{{$i}}" value="{{$child[$i-1]->subtotal}}">
+                       @endif
+                    </td>
                 </tr>
                 <script type="text/javascript">
                 function getItem{{$i}}(str)
@@ -372,7 +405,7 @@
             <tr class="total">
 
                 <td colspan="5"></td><td>Total: </td>
-                <td id="counttotal">Rp. ,-</td>
+                <td id="counttotal">Rp. {{number_format ($invoicetotal, 2, ',', '.')}}</td>
             </tr>
         </table>
         <div class="clear"></div>
@@ -410,6 +443,7 @@
          {
             $("#FormSubmit").click();
          });
+
    })
 
     </script>
