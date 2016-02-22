@@ -38,6 +38,10 @@
          {
             background:#2e8ece;
          }
+			.pomegranate
+			{
+				background-color: #d04233;
+			}
       </style>
 	</div>
 	  <div class="row">
@@ -65,6 +69,21 @@
                               <br>
                               <br>
                               <h2><i class="fa fa-truck"></i> Supplier</h2>
+                              <br>
+                              <br>
+                              <br>
+                             <div class="clearfix"></div>
+                          </a>
+                       </div>
+                   </div>
+						 <div class="col-lg-3"></div>
+						 <div class="col-lg-6">
+                       <div class="text-center contact-box centerBtn pomegranate" data-animation="bounce">
+                           <a href="/invoice/pending">
+                              <br>
+                              <br>
+                              <br>
+                              <h2><i class="fa fa-file-text-o"></i> Invoice</h2>
                               <br>
                               <br>
                               <br>

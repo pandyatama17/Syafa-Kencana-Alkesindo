@@ -1,7 +1,8 @@
 @extends('layouts.header')
 
 @section('content')
-<script src="/assets/jquery.dataTables.min.js" charset="utf-8"></script>
+{{-- <script src="/assets/jquery.dataTables.min.js" charset="utf-8"></script> --}}
+<link rel="stylesheet" href="/swal/dist/sweetalert.css" media="screen" title="no title" charset="utf-8">
 <div class="row wrapper border-bottom white-bg page-heading">
    <div class="col-sm-4">
       <h2>Daftar Barang</h2>
@@ -50,7 +51,7 @@
                          </thead>
                          <tbody>
                             @foreach($items as $res)
-                               <tr>
+                               <tr data-href="{{url()}}/storage/show/{{$res->id}}" data-qty="{{$res->qty}}" data-item="{{$res->id}}">
                                   <td @if($res->qty == 0) style="background:#e74c3c; color:white" @endif><strong>{{$res->id}}</strong></td>
                                   <td @if($res->qty == 0) style="background:#e74c3c; color:white" @endif style="width:230px">{{$res->item_name}}</td>
                                   <td @if($res->qty == 0) style="background:#e74c3c; color:white" @endif>{{$res->qty}}</td>
@@ -64,14 +65,15 @@
                                       </a>|
                                       <a @if($res->qty == 0) style="background:#e74c3c; color:white" @endif href="/storage/restock/{{$res->id}}" class="secondary-content">
                                       {{--Barang Masuk--}}<i class="fa fa-sign-in"></i>
-                                    </a>|
+                                    </a>
+                                    {{-- |
                                       @if ($res->qty != 0)
                                          <a href="/deliveryorder/create" class="secondary-content">
-                                            {{--Barang Keluar--}}<i class="fa fa-sign-out"></i>
+                                            <i class="fa fa-sign-out"></i>
                                          </a>
                                       @else
                                          <a style="color:#f1c40f" class="secondary-content" href="#"><i class="fa fa-sign-out"></i></a>
-                                      @endif
+                                      @endif --}}
                                    </td>
                                </tr>
                             @endforeach
@@ -116,20 +118,53 @@
 <!-- Custom and plugin javascript -->
 <script src="/assets/js/inspinia.js"></script>
 <script src="/assets/js/plugins/pace/pace.min.js"></script>
+<script type="text/javascript" src="/swal/dist/sweetalert.min.js"></script>
 
 <!-- Page-Level Scripts -->
 <script>
-$(document).ready(function() {
-$('.dataTables-example').dataTable({
-responsive: true,
+$(document).ready(function()
+{
+   $('.dataTables-example').dataTable(
+   {
+      responsive: true,
 // "dom": 'T<"clear">lfrtip',
-"tableTools": {
-    "sSwfPath": "/assets/js/plugins/dataTables/swf/copy_csv_xls_pdf.swf"
-},
-columnDefs: [
-   { orderable: false, targets: -1 }
-]
-});
+      "tableTools":
+      {
+          "sSwfPath": "/assets/js/plugins/dataTables/swf/copy_csv_xls_pdf.swf"
+      },
+      columnDefs:
+      [{
+         orderable: false, targets: -1
+      }]
+   });
+
+   $("tr").click(function()
+   {
+      var url = $(this).data('href');
+      var qty = $(this).data('qty');
+      var item = $(this).data('item');
+
+      if (qty == "0")
+      {
+         swal(
+         {
+            title: "Warning",
+            text: "Stok barang kosong! silahkan laukan pemesanan barang untuk "+item,
+            type: "warning",
+            showCancelButton: false,
+            // confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Lanjut",
+            closeOnConfirm: false
+         }, function()
+         {
+            window.location.href = url;
+         });
+      }
+      else
+      {
+         window.location.href = url;
+      }
+   });
 
 /* Init DataTables */
 // var oTable = $('#editable').dataTable();
@@ -192,6 +227,10 @@ padding: 6px 8px;
 .dataTables_filter label {
 margin-right: 5px;
 
+}
+tr
+{
+      cursor: pointer;
 }
 </style>
 <script type="text/javascript">

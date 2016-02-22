@@ -322,7 +322,7 @@ class ItemController extends Controller {
 			if (Input::hasFile('image'))
 			{
 				$file     = Input::file('image');
-				$filename = $ip['id'].'.'.$file->getClientOriginalExtension();
+				$filename = $ip['newid'].'.'.$file->getClientOriginalExtension();
 				$destinationPath = public_path().'/img/item';
 				$file->move($destinationPath, $filename);
 

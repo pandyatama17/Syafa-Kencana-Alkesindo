@@ -27,19 +27,29 @@
         <div class="sidebar-collapse">
             <ul class="nav" id="side-menu">
                 <li class="nav-header">
-                    <div class="dropdown profile-element"> <span>
-                            <img alt="image" class="img-circle" src="/assets/img/profile_small.jpg" />
-                             </span>
-                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">David Williams</strong>
-                             </span> <span class="text-muted text-xs block">Art Director <b class="caret"></b></span> </span> </a>
-                        <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                    <div class="dropdown profile-element">
+                       @if(Session::has('user'))
+                          <span>
+                            <img alt="image" class="img-circle" src="/img/user/{{Session::get('user')->avatar}}" style="width:75px; height:75px"/>
+                         </span>
+                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <span class="clear">
+                               <span class="block m-t-xs">
+                                  <strong class="font-bold">{{Session::get('user')->name}}</strong>
+                               </span>
+                               {{Session::get('user')->user_level}} <b class="caret"></b>
+                               <span class="text-muted text-xs block">
+                               </span>
+                            </span>
+                         </a>
+                         <ul class="dropdown-menu animated fadeInRight m-t-xs">
                             <li><a href="/assets/profile.html">Profile</a></li>
                             <li><a href="/assets/contacts.html">Contacts</a></li>
                             <li><a href="/assets/mailbox.html">Mailbox</a></li>
                             <li class="divider"></li>
                             <li><a href="/assets/login.html">Logout</a></li>
                         </ul>
+                        @endif
                     </div>
                     <div class="logo-element">
                         SKA
@@ -119,6 +129,7 @@
       </div>
    </div>
 </div>
+   <link rel="stylesheet" href="/plugins/sf-flash/jquery.sf-flash.min.css" media="screen" title="no title" charset="utf-8">
 
     <!-- Mainly scripts -->
     <script src="/assets/js/plugins/metisMenu/jquery.metisMenu.js"></script>
@@ -128,7 +139,7 @@
     <!-- Custom and plugin javascript -->
     <script src="/assets/js/inspinia.js"></script>
     <script src="/assets/js/plugins/pace/pace.min.js"></script>
-
+    <script src="/plugins/sf-flash/jquery.sf-flash.min.js" charset="utf-8"></script>
 
 </body>
 
