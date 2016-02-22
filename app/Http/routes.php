@@ -83,3 +83,5 @@ Route::any('/deliveryorder/create', 'DOController@create');
 Route::any('/deliveryorder/create/base/{id}', 'DOController@createWithInvoice');
 Route::any('/deliveryorder/create/itembase/{id}', 'DOController@createWithItem');
 Route::post('/deliveryorder/store', 'DOController@store');
+
+Route::any('/storage/invoice/list', 'InvoiceController@listPending');

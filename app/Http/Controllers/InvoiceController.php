@@ -62,32 +62,6 @@ class InvoiceController extends Controller {
 	public function storeInvoice(Request $request)
  	{
 		$inp = Input::all();
-	// 	$dlen = $inp['datalength'];
-	// 	// for($i = 1; $i <= $inp['datalength']; $i++)
-	// 	// {
-	// 	// 	echo "query ke-".$i."<br>";
-	// 	// }
-	// 	// echo "<br>dari ".$inp['datalength']." data<br><br>";
-		echo "<ul>";
-		echo "<li>parent_id : ".$inp['parent_id']."</li>";
-		echo "<li>invoice_date : ".$inp['invoice_date']."</li>";
-		echo "<li>due_date : ".$inp['due_date']."</li>";
-		echo "<li>delivery_date : ".$inp['delivery_date']."</li>";
-		echo "<li>sales : ".$inp['sales']."</li>";
-		echo "<li>payment : ".$inp['payment']."</li>";
-		echo "</ul><br><h1>Items:</h1>";
-
-		// $invoice = new InvoiceParent;
-		//
-		// $invoice->id = $inp['parent_id'];
-		// $invoice->invoice_date = $inp['invoice_date']
-		// $invoice->due_date = $inp['due_date']
-		// $invoice->delivery_date = $inp['delivery_date']
-		// $invoice->client_name = $inp['client_name']
-		// $invoice->client_address = $inp['client_address']
-		// $invoice->sales = $inp['sales']
-		// $invoice->payment = $inp['payment']
-		// $invoice->PIC = $inp['user']
 		try
 		{
 			InvoiceParent::create([
@@ -246,5 +220,10 @@ class InvoiceController extends Controller {
 	{
 		//
 	}
+	public function listPending()
+	{
+		$iv = InvoiceParent::where('status','pending')->get();
 
+		return view('invoice.storage.list')->with('ivs', $iv);
+	}
 }

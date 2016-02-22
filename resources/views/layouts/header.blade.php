@@ -15,6 +15,8 @@
     <link href="/assets/css/animate.css" rel="stylesheet">
     <link href="/assets/css/style.css" rel="stylesheet">
 
+    <link rel="stylesheet" href="/swal/dist/sweetalert.css" media="screen" title="no title" charset="utf-8">
+
     <script src="/assets/js/jquery-2.1.1.js"></script>
     <script src="/assets/js/bootstrap.min.js"></script>
 </head>
@@ -67,7 +69,8 @@
                            {{-- <li><a href="/assets/dashboard_4_1.html">Dashboard v.4</a></li> --}}
                        </ul>
                    </li>
-                  @elseif(Session::get('user')->user_level == 'gudang' || Session::get('user')->user_level == 'owner')
+                  @endif
+                  @if(Session::get('user')->user_level == 'gudang' || Session::get('user')->user_level == 'owner')
                       <li>
                           <a href="#" id="NavbarStorage"><i class="fa fa-home"></i> <span class="nav-label">Gudang</span> <span class="fa arrow"></span></a>
                           <ul class="nav nav-second-level">
@@ -84,6 +87,14 @@
                               {{-- <li><a href="/assets/dashboard_4_1.html">Dashboard v.4</a></li> --}}
                           </ul>
                       </li>
+                  @endif
+                  @if(Session::get('user')->user_level == 'gudang')
+                     <li>
+                       <a href="{{url('/storage/invoice/list')}}"><i class="fa fa-files-o"></i> <span class="nav-label">Invoice</span></a>
+                     </li>
+                     <li>
+                       <a href="{{url('/supplier')}}"><i class="fa fa-file-text"></i> <span class="nav-label">Delivery Order</span></a>
+                     </li>
                   @endif
                    <li>
                        <a href="{{url('/supplier')}}"><i class="fa fa-truck"></i> <span class="nav-label">Supplier</span></a>
@@ -140,6 +151,7 @@
     <script src="/assets/js/inspinia.js"></script>
     <script src="/assets/js/plugins/pace/pace.min.js"></script>
     <script src="/plugins/sf-flash/jquery.sf-flash.min.js" charset="utf-8"></script>
+    <script src="/swal/dist/sweetalert.min.js" charset="utf-8"></script>
 
 </body>
 
