@@ -1,7 +1,6 @@
 @extends('layouts.header')
 
 @section('content')
-<script src="/assets/jquery.dataTables.min.js" charset="utf-8"></script>
 <div class="row wrapper border-bottom white-bg page-heading">
    <div class="col-sm-4">
       <h2>Data Delivery Order</h2>
@@ -38,20 +37,20 @@
                       <table class="table table-striped table-bordered table-hover dataTables-example" >
                          <thead>
                          <tr>
-                             <th style="background-color:#34495e;color:white">DO ID</th>
-                             <th style="background-color:#34495e;color:white">DO Date</th>
-                             <th style="background-color:#34495e;color:white">Due Date</th>
-                             <th style="background-color:#34495e;color:white">Delivery Date</th>
-                             <th style="background-color:#34495e;color:white">Client Name</th>
-                             <th style="background-color:#34495e;color:white">Client Address</th>
+                             <th style="background-color:#34495e;color:white">DO #</th>
+                             <th style="background-color:#34495e;color:white">Tanggal</th>
+                             <th style="background-color:#34495e;color:white">Jatuh Tempo</th>
+                             <th style="background-color:#34495e;color:white">Tanggal Pengiriman</th>
+                             <th style="background-color:#34495e;color:white">Nama Client</th>
+                             <th style="background-color:#34495e;color:white">Alamat Client</th>
                              <th style="background-color:#34495e;color:white">Sales</th>
-                             <th style="background-color:#34495e;color:white">Payment</th>
+                             <th style="background-color:#34495e;color:white">Pembayaran</th>
                              <th style="background-color:#34495e;color:white">PIC</th>
                          </tr>
                          </thead>
                          <tbody>
                             @foreach($dos as $do)
-                               <tr data-href="{{url('deliveryorder/show/'.$do->id)}}">
+                               <tr class="clickableRow" data-href="{{url('deliveryorder/show/'.$do->id)}}">
                                   <td><strong>{{$do->id}}</strong></td>
                                   <td>{{$do->do_date}}</td>
                                   <td>{{$do->due_date}}</td>
@@ -66,14 +65,14 @@
                         </tbody>
                         <tfoot>
                         <tr>
-                           <th style="background-color:#34495e;color:white">DO ID</th>
-                           <th style="background-color:#34495e;color:white">DO Date</th>
-                           <th style="background-color:#34495e;color:white">Due Date</th>
-                           <th style="background-color:#34495e;color:white">Delivery Date</th>
-                           <th style="background-color:#34495e;color:white">Client Name</th>
-                           <th style="background-color:#34495e;color:white">Client Address</th>
+                           <th style="background-color:#34495e;color:white">DO #</th>
+                           <th style="background-color:#34495e;color:white">Tanggal</th>
+                           <th style="background-color:#34495e;color:white">Jatuh Tempo</th>
+                           <th style="background-color:#34495e;color:white">Tanggal Pengiriman</th>
+                           <th style="background-color:#34495e;color:white">Nama Client</th>
+                           <th style="background-color:#34495e;color:white">Alamat Client</th>
                            <th style="background-color:#34495e;color:white">Sales</th>
-                           <th style="background-color:#34495e;color:white">Payment</th>
+                           <th style="background-color:#34495e;color:white">Pembayaran</th>
                            <th style="background-color:#34495e;color:white">PIC</th>
                         </tr>
                         </tfoot>
@@ -117,7 +116,7 @@ responsive: true,
 }
 });
 
-$("tr").click(function()
+$(".clickableRow").click(function()
 {
    var url = $(this).data('href');
 

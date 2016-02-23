@@ -46,7 +46,7 @@
                            </h2>
                               <small>{{$item->id}}</small>
                            </div>
-                           <img src="/img/item/{{$item->image}}" class="img-rounded rounded-border m-b-md" alt="profile" id="ItemImage">
+                           <img src="/img/item/{{$item->image}}" class="img-rounded rounded-border m-b-md img-responsive" alt="profile" id="ItemImage">
                            <div class="text-right">
                               {{-- <a class="btn btn-xs btn-primary"><i class="fa fa-edit"></i> Edit</a> --}}
                               <a class="btn btn-xs btn-primary" id="CardAction"><i class="fa fa-edit"></i> Edit</a>
@@ -82,11 +82,12 @@
                               </tr>
                            </table>
                            <div class="text-right">
-                              <form class="form-inline" action="{{action('ItemController@destroy')}}" method="get" id="DeleteItemForm">
+                              {{-- <form class="form-inline" action="{{action('ItemController@destroy')}}" method="get" id="DeleteItemForm">
                                  <input type="hidden" name="id" value="{{$item->id}}">
-                                    <button class="btn btn-xs btn-danger"><i class="fa fa-trash"></i> Delete </button>
+                                    <button class="btn btn-xs btn-danger"><i class="fa fa-trash"></i> Delete </button> --}}
+												<a class="deleteBtn btn btn-xs btn-danger" data-href="{{url('storage/delete/'.$item->id)}}" id="{{$item->id}}"><i class="fa fa-trash"></i> Delete</a>
                                     <a class="btn btn-xs btn-primary" id="CardAction2"><i class="fa fa-edit"></i> Edit</a>
-                              </form>
+                              {{-- </form> --}}
                            </div>
                        </div>
                        <div class="widget-text-box" id="EditItemContainer" style="box-shadow: inset 1px 4px 9px -6px;">
@@ -217,6 +218,78 @@
           readURL(this);
       });
    });
+	$(".deleteBtn").click(function()
+   {
+      var url= $(this).data('href');
+      var item_id = this.id;
+      if(url != "")
+      {
+         swal(
+         {
+            title: "Hapus Barang",
+            text: "Hapus "+item_id+"? semua data invoice dan DO yang menggunakan barang ini akan tidak terbaca",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Lanjut",
+            closeOnConfirm: false,
+         },function()
+         {
+				swal(
+				{
+					title: "Konfirmasi Penghapusan Barang",
+					text: "Silahkan Ketik 'HAPUS'",
+					type: "input",
+					showCancelButton: true,
+					closeOnConfirm: false,
+					animation: "slide-from-top",
+					inputPlaceholder: "Silahkan Ketik 'HAPUS'",
+					showLoaderOnConfirm: true,
+				},function(inputValue)
+				{
+					if (inputValue === false) return false;
+					if (inputValue != "HAPUS")
+					{
+						swal.showInputError("Silahkan Ketik 'HAPUS' ");
+						return false
+					}
+					else
+					{
+						$.ajax(
+		            {
+		               type: "get",
+		               url: url,
+		               // data: url,
+		               success: function(data)
+		               {
+		               }
+		            }).done(function(data)
+		            {
+		               swal(
+		               {
+		                  title: "Success",
+		                  text: "Barang telah Dihapus!",
+		                  type: "success",
+		                  showCancelButton: false,
+		                  // confirmButtonColor: "#DD6B55",
+		                  confirmButtonText: "OK",
+		                  closeOnConfirm: false
+		               }, function()
+		               {
+								window.location.href = "{{url('storage/list')}}";
+								// location.reload();
+		               });
+		               $('#orders-history').load(document.URL +  ' #orders-history');
+		            }).error(function(data)
+		            {
+		               swal("Oops", "We couldn't connect to the server!", "error");
+		            });
+					}
+
+				});
+         });
+      }
+   });
    var resell_price = $("#resell_price").text();
    $("#resell_price").text(rupiah(resell_price));
 
@@ -283,62 +356,7 @@
                     }
                 }
             });
-            $('#DeleteItemForm').validate(
-                {
-                    rules:
-                    {
-                        id:
-                        {
-                                required: true
-                        },
 
-                    },
-                    highlight: function(label)
-                    {
-                        $(label).closest().addClass('error');
-                    },
-                    success: function(label)
-                    {
-                        label.closest().addClass('success');
-                    },
-                    submitHandler: function(form)
-                    {
-                        if ($(form).valid())
-                        {
-                           $(form).ajaxSubmit(
-                           {
-                                url:$(this).attr('action'),
-                                type: 'GET',
-                                data: $(this).serialize(),
-                                success: function(data)
-                                {
-                                    var obj = jQuery.parseJSON(data);
-                                    if(obj.err == false)
-                                    {
-                                        swal(
-                                        {
-                                            title: "Success!",
-                                            text: obj.msg,
-                                            type: "success",
-                                            confirmButtonColor: "#0288d1",
-                                            confirmButtonText: "Ok!",
-                                            closeOnConfirm: false
-                                        },
-                                        function()
-                                        {
-                                            location.replace('/storage/list');
-                                        });
-                                        }
-                                        else
-                                        {
-                                            swal("Opps!", obj.msg, "error");
-                                        }
-                                    }
-                                })
-                                return false;
-                           }
-                        }
-                    });
     function rupiah(nStr)
    {
       nStr += '';

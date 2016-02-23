@@ -51,7 +51,7 @@
                          </thead>
                          <tbody>
                             @foreach($items as $res)
-                               <tr data-href="{{url()}}/storage/show/{{$res->id}}" data-qty="{{$res->qty}}" data-item="{{$res->id}}">
+                               <tr class="clickableRow" data-href="{{url()}}/storage/show/{{$res->id}}" data-qty="{{$res->qty}}" data-item="{{$res->id}}">
                                   <td @if($res->qty == 0) style="background:#e74c3c; color:white" @endif><strong>{{$res->id}}</strong></td>
                                   <td @if($res->qty == 0) style="background:#e74c3c; color:white" @endif style="width:230px">{{$res->item_name}}</td>
                                   <td @if($res->qty == 0) style="background:#e74c3c; color:white" @endif>{{$res->qty}}</td>
@@ -138,7 +138,7 @@ $(document).ready(function()
       }]
    });
 
-   $("tr").click(function()
+   $(".clickableRow").click(function()
    {
       var url = $(this).data('href');
       var qty = $(this).data('qty');

@@ -49,12 +49,12 @@ Route::post('/storage/add/store','ItemController@storeItem');
 Route::any('/storage/out/item={id}', 'ItemController@getItemData');
 Route::any('/storage/out/', 'ItemController@showOutPage');
 Route::post('/storage/out/keluaringihsono', 'ItemController@itemOut');
-Route::any('/storage/DO', 'ItemController@createDO');
-Route::get('/storage/DO/{id}',"ItemController@getItemsForDO");
-Route::post('/storage/DO/store',"ItemController@storeDO");
 Route::get('/storage/show/{id}', 'ItemController@show');
 Route::post('/storage/update/', 'ItemController@update');
-Route::get('/storage/delete', 'ItemController@destroy');
+// Route::get('/storage/delete', 'ItemController@destroy');
+Route::get('/storage/delete/{id}', 'ItemController@destroy');
+
+Route::get('/finance/usersJSON/{id}',"FinanceController@getUsersForIv");
 
 Route::any('/finance',"FinanceController@index");
 Route::any('/finance/invoice',"FinanceController@createInvoice");
@@ -89,3 +89,5 @@ Route::any('/storage/invoice/list', 'InvoiceController@listPending');
 
 Route::any('/piutang/all', 'PiutangController@showAll');
 Route::any('/piutang/clear', 'PiutangController@showLunas');
+Route::any('/piutang/pending', 'PiutangController@showHutang');
+Route::get('/piutang/check/{id}', 'PiutangController@check');

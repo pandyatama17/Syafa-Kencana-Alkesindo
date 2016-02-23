@@ -1,29 +1,25 @@
 <!doctype html>
 <html>
 <head>
-   <link rel="stylesheet" href="{{asset('chosen/chosen.css')}}" media="screen,print"charset="utf-8">
-   <link rel="stylesheet" href="{{asset('swal/dist/sweetalert.css')}}" media="screen" title="no title" charset="utf-8">
+    <script type="text/javascript" src="/materialize/dist/js/jquery-2.2.0.min.js"></script>
+    <script type="text/javascript" src="/materialize/dist/js/materialize.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="/materialize/dist/css/materialize.min.css"  media="screen,projection"/>
+    <script src="/jquery.PrintArea.js" type="text/JavaScript" language="javascript"></script>
 
-   <script src="{{asset('jquery.min.js')}}" charset="utf-8"></script>
-   <script src="{{asset('swal/dist/sweetalert.min.js')}}"></script>
-   <script src="{{asset('chosen/chosen.jquery.min.js')}}"></script>
-   <script src="{{asset('jquery.validate.min.js')}}" charset="utf-8"></script>
-   <script src="{{asset('jquery.form.js')}}" charset="utf-8"></script>
-   <script src="{{asset('jquery.PrintArea.js')}}" type="text/JavaScript" language="javascript"></script>
-
-   <nav style="background:#2ecc71; margin:-8px; height:50px; padding:10px; padding-top:0px; padding-bottom:0px; font-family: Arial">
-      {{-- <div class="nav-wrapper" > --}}
-         <a href="/" style="float:left; margin-left:20px; font-family: Arial; text-decoration:none; color:white; font-size:20pt; padding-top:10px;">Invoice</a>
-           <ul style="float:right; margin-top:7px">
-             <li style="float:left">
-                 <button type="button" name="printButton" class="button blue" id="printBtn">Print</button>&nbsp;&nbsp;&nbsp;
-             </li>
-             <li style="float:right">
-                 <button type="button" name="backButton" class="button red" onclick="history.back(-1)">Back</button>
-             </li>
-           </ul>
-        {{-- </div> --}}
-   </nav>
+    {{-- <link type="text/css" rel="stylesheet" href="PrintArea.css" /> --}}
+    <nav>
+        <div class="nav-wrapper">
+            <a href="/" class="brand-logo" style="margin-left:20px">Invoice</a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li>
+                    <button type="button" id="printBtn" class="button b1 waves-effect waves-light btn-large " name="button">Print</button>
+                </li>
+                <li class="linav">
+                  <a href="/finance/invoice/">back</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
 
     <meta charset="utf-8">
     <title>Invoice</title>
@@ -32,7 +28,6 @@
 </head>
 
 <body>
-   <br> <br> <br>
     <div class="PrintArea area1 all" id="InvoiceArea">
     <div class="invoice-box">
         <table cellpadding="0" cellspacing="0">
@@ -102,10 +97,10 @@
                   <td>{{$child->id}}</td>
                   <td>{{$child->item_id}}</td>
                   <td>{{DB::table('item')->where('id', $child->item_id)->pluck('item_name')}}</td>
-                  <td>{{$child->qty}} item</td>
-                  <td class="itemprice">{{DB::table('item')->where('id', $child->item_id)->pluck('resell_price')}}</td>
-                  <td>{{$child->discount}}%</td>
-                  <td class="subtotal">{{$child->subtotal}}</td>
+                  <td>{{$child->qty}}</td>
+                  <td>{{DB::table('item')->where('id', $child->item_id)->pluck('resell_price')}}</td>
+                  <td>{{$child->discount}}</td>
+                  <td>{{$child->subtotal}}</td>
                </tr>
             @endforeach
 
@@ -116,8 +111,7 @@
             <tr class="total">
 
                 <td></td><td></td><td></td><td></td><td></td><td>Total: </td>
-                <td id="invoicetotal">{{$total}}</td>
-                {{-- <td>Rp. {{$ptg->total}},-</td> --}}
+                <td>Rp. {{DB::table('piutang')->where('invoice_parent_id', $iv->id)->pluck('total')}},-</td>
             </tr>
         </table>
         <div class="clear"></div>
@@ -139,34 +133,9 @@
     </div>
 </div>
     <script>
-      function rupiah(nStr)
-      {
-         nStr += '';
-         x = nStr.split('.');
-         x1 = x[0];
-         x2 = x.length > 1 ? '.' + x[1] : '';
-         var rgx = /(\d+)(\d{3})/;
-         while (rgx.test(x1))
-         {
-           x1 = x1.replace(rgx, '$1' + '.' + '$2');
-         }
-         return "Rp. " + x1 + x2 +",00";
-      }
       $(document).ready(function(){
 
-         $(".itemprice").text(function()
-         {
-            $(this).text(rupiah($(this).text()));
-         });
-         $(".subtotal").text(function()
-         {
-            $(this).text(rupiah($(this).text()));
-         });
-         $("#invoicetotal").text(function()
-         {
-            $(this).text(rupiah($(this).text()));
-         });
-          $("#printBtn").click(function functionName()
+          $("#printBtn").on('click',function functionName()
           {
               $("#InvoiceArea").printArea({
                     mode       : "popup",

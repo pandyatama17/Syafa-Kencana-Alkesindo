@@ -183,7 +183,7 @@ class InvoiceController extends Controller {
 		$ivchild = InvoiceChild::where('parent_id',$iv->id)->get();
 		$piutang = Piutang::where('invoice_parent_id',$id)->pluck('total');
 
-		return view('reports.invoice',array('iv'=>$iv, 'ivchilds'=> $ivchild,'total'=>$piutang));
+		return view('invoice.show',array('iv'=>$iv, 'ivchilds'=> $ivchild,'total'=>$piutang));
 		// return $piutang;
 
 	}

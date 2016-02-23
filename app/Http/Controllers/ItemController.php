@@ -342,9 +342,9 @@ class ItemController extends Controller {
 			}
 
 	}
-	public function destroy(Request $req)
+	public function destroy($id)
 	{
-		$it = Item::find($req->id);
+		$it = Item::find($id);
 		try
 		{
 				$it->delete();

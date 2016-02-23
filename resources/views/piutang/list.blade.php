@@ -1,7 +1,6 @@
 @extends('layouts.header')
 
 @section('content')
-<script src="/assets/jquery.dataTables.min.js" charset="utf-8"></script>
 <div class="row wrapper border-bottom white-bg page-heading">
    <div class="col-sm-4">
       <h2>Data Invoice</h2>
@@ -66,7 +65,7 @@
                                   <td style="{{$cssclass}}">{{$ptg->invoice_parent_id}}</td>
                                   <td style="{{$cssclass}}">{{$ptg->date}}</td>
                                   <td style="{{$cssclass}}">{{$ptg->due_date}}</td>
-                                  <td style="{{$cssclass}}">{{ number_format ($ptg->total, 2, ',', '.') }}</td>
+                                  <td style="{{$cssclass}}">Rp. {{ number_format ($ptg->total, 2, ',', '.') }}</td>
                                   <td style="{{$cssclass}}">
                                      @if($ptg->status == 'pending')
                                        <span style="color:#d35400">{{$ptg->status}}</span>
@@ -79,10 +78,18 @@
                                   <td style="{{$cssclass}}">
                                      <a href="{{url('invoice/show/'.$ptg->invoice_parent_id)}}">
                                         <i class="fa fa-file-text"></i>
-                                     </a> |
-                                     <a href="{{url('piutang/show/'.$ptg->id)}}">
-                                        <i class="fa fa-eye"></i>
-                                     </a>
+                                     </a> 
+                                     @if($pagin != "Piutang Lunas")
+                                        |<a class="check" id="{{$ptg->invoice_parent_id}}" data-href="@if($ptg->status != 'ok') {{url('piutang/check/'.$ptg->id)}}@endif">
+                                           <i class="checkicon
+                                             @if($ptg->status != 'ok')
+                                                fa fa-square-o
+                                             @else
+                                                fa fa-check-square-o
+                                             @endif
+                                          "></i>
+                                        </a>
+                                    @endif
                                   </td>
                                </tr>
                             @endforeach
@@ -129,35 +136,86 @@
 
 <!-- Page-Level Scripts -->
 <script>
-$(document).ready(function() {
-$('.dataTables-example').dataTable({
-responsive: true,
-// "dom": 'T<"clear">lfrtip',
-"tableTools": {
-    "sSwfPath": "js/plugins/dataTables/swf/copy_csv_xls_pdf.swf"
-}
-});
+$(document).ready(function()
+{
+   $('.dataTables-example').dataTable(
+   {
+      responsive: true,
+      // "dom": 'T<"clear">lfrtip',
+      "tableTools":
+      {
+          "sSwfPath": "js/plugins/dataTables/swf/copy_csv_xls_pdf.swf"
+      }
+   });
 
-/* Init DataTables */
-var oTable = $('#editable').dataTable();
+   /* Init DataTables */
+   var oTable = $('#editable').dataTable();
 
-/* Apply the jEditable handlers to the table */
-oTable.$('td').editable( '../example_ajax.php', {
-"callback": function( sValue, y ) {
-    var aPos = oTable.fnGetPosition( this );
-    oTable.fnUpdate( sValue, aPos[0], aPos[1] );
-},
-"submitdata": function ( value, settings ) {
-    return {
-        "row_id": this.parentNode.getAttribute('id'),
-        "column": oTable.fnGetPosition( this )[2]
-    };
-},
+   /* Apply the jEditable handlers to the table */
+   oTable.$('td').editable( '../example_ajax.php', {
+   "callback": function( sValue, y ) {
+       var aPos = oTable.fnGetPosition( this );
+       oTable.fnUpdate( sValue, aPos[0], aPos[1] );
+   },
+   "submitdata": function ( value, settings ) {
+       return {
+           "row_id": this.parentNode.getAttribute('id'),
+           "column": oTable.fnGetPosition( this )[2]
+       };
+   },
 
-"width": "90%",
-"height": "100%"
-} );
-
+   "width": "90%",
+   "height": "100%"
+   } );
+   $(".check").click(function()
+   {
+      var url=$(this).data('href');
+      var invoice_parent_id = this.id;
+      if(url != "")
+      {
+         swal(
+         {
+            title: "Pelunasan Piutang",
+            text: "Lakuan pelunasan piutang untuk "+invoice_parent_id+"?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Lanjut",
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true,
+         },function()
+         {
+            $.ajax(
+            {
+               type: "get",
+               url: url,
+               // data: url,
+               success: function(data)
+               {
+               }
+            }).done(function(data)
+            {
+               swal(
+               {
+                  title: "Success",
+                  text: "Piutang telah dilunasi!",
+                  type: "success",
+                  showCancelButton: false,
+                  // confirmButtonColor: "#DD6B55",
+                  confirmButtonText: "OK",
+                  closeOnConfirm: false
+               }, function()
+               {
+                  window.location.href = "{{url('piutang/all')}}";
+               });
+               $('#orders-history').load(document.URL +  ' #orders-history');
+            }).error(function(data)
+            {
+               swal("Oops", "We couldn't connect to the server!", "error");
+            });
+         });
+      }
+   });
 
 });
 

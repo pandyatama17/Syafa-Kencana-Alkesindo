@@ -73,7 +73,7 @@
                        <ul class="nav nav-second-level">
                            <li><a href="{{url('piutang/all')}}">Semua Piutang</a></li>
                            <li><a href="{{url('piutang/clear')}}">Piutang Lunas</a></li>
-                           <li><a href="{{url('/invoice/create')}}">Piutang Belum Lunas</a></li>
+                           <li><a href="{{url('piutang/pending')}}">Piutang Belum Lunas</a></li>
                            {{-- <li><a href="/assets/dashboard_4_1.html">Dashboard v.4</a></li> --}}
                        </ul>
                    </li>

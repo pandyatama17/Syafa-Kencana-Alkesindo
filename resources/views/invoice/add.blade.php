@@ -1,22 +1,19 @@
 <!doctype html>
 <html>
 <head>
-    <script type="text/javascript" src="/materialize/dist/js/jquery-2.2.0.min.js"></script>
-    <script type="text/javascript" src="/materialize/dist/js/materialize.min.js"></script>
-    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    {{-- <link type="text/css" rel="stylesheet" href="/materialize/dist/css/materialize.min.css"  media="screen,projection"/> --}}
-    {{-- <link href="/materialize/css/prism.css" rel="stylesheet"> --}}
-    {{-- <link href="/materialize/css/ghpages-materialize.css" type="text/css" rel="stylesheet"> --}}
-    <script type="text/javascript" src="/swal/dist/sweetalert.min.js"></script>
-    <script type="text/javascript" src="/chosen/chosen.jquery.min.js"></script>
-    <link rel="stylesheet" href="/chosen/chosen.css" media="screen,print"charset="utf-8">
-    <link rel="stylesheet" href="swal/dist/sweetalert.css" media="screen" title="no title" charset="utf-8">
-    <script src="/jquery.validate.min.js" charset="utf-8"></script>
-    <script src="/jquery.form.js" charset="utf-8"></script>
 
-    <nav style="background:#ef5350; margin:-8px; height:50px; padding:10px; padding-bottom:0px; font-family: Roboto">
+    <link rel="stylesheet" href="{{asset('chosen/chosen.css')}}" media="screen,print"charset="utf-8">
+    <link rel="stylesheet" href="{{asset('swal/dist/sweetalert.css')}}" media="screen" title="no title" charset="utf-8">
+
+    <script src="{{asset('jquery.min.js')}}" charset="utf-8"></script>
+    <script src="{{asset('swal/dist/sweetalert.min.js')}}"></script>
+    <script src="{{asset('chosen/chosen.jquery.min.js')}}"></script>
+    <script src="{{asset('jquery.validate.min.js')}}" charset="utf-8"></script>
+    <script src="{{asset('jquery.form.js')}}" charset="utf-8"></script>
+
+    <nav style="background:#2ecc71; margin:-8px; height:50px; padding:10px; padding-bottom:0px; font-family: Arial">
         <div class="nav-wrapper" >
-            <a href="/" style="margin-left:20px; font-family: candara; text-decoration:none; color:white; font-size:20pt">Invoice</a>
+            <a href="/" style="margin-left:20px; font-family: Arial; text-decoration:none; color:white; font-size:20pt">Invoice</a>
             <button type="button" name="button" class="button" style="float:right" id="SaveBtn">Save</button>
          </div>
     </nav>

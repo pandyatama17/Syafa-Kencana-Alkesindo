@@ -23,11 +23,29 @@ class PiutangController extends Controller {
 	 }
 	public function showLunas()
 	{
-		$ptgs = Piutang::where('status','ok');
+		$ptgs = Piutang::where('status','ok')->get();
 
 		$pagin = "Piutang Lunas";
 
 	  return view('piutang.list')->with('ptgs', $ptgs)->with('pagin', $pagin);
+	}
+
+	public function showHutang()
+	{
+		$ptgs = Piutang::where('status','Pending')->get();
+
+		$pagin = "Piutang Belum Lunas";
+
+	  return view('piutang.list')->with('ptgs', $ptgs)->with('pagin', $pagin);
+	}
+
+	public function check($id)
+	{
+		$ptg = Piutang::find($id);
+		$ptg->status='ok';
+		$ptg->save();
+		// echo json_encode(array('wew'=>'wew'));
+		// return 'wew';
 	}
 	public function index()
 	{
