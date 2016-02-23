@@ -16,6 +16,7 @@ class DeliveryOrder extends Model {
 		'client_address',
 		'sales',
 		'payment',
+		'total',
 		'PIC'
 	];
 

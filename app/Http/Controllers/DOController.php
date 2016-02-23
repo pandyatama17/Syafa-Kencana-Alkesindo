@@ -28,7 +28,9 @@ class DOController extends Controller {
 	 */
 	public function index()
 	{
+		$dos = DeliveryOrder::all();
 
+		return view('DO.list')->with('dos', $dos);
 	}
 
 	/**
@@ -87,7 +89,8 @@ class DOController extends Controller {
 				'client_address' => $request->client_address,
 				'sales' => $request->sales,
 				'payment' => $request->payment,
-				'PIC' => $request->user
+				'total' => $request->total,
+				'PIC' => $request->t
 			]);
 
 			$iv = InvoiceParent::find($request->parent_id);
@@ -95,6 +98,12 @@ class DOController extends Controller {
 
 			if(isset($inp['item1']))
 			{
+				//---------------- Edit Item qty 1 --------------------
+				$item = Item::find($request->item1);
+
+				$item->qty = $item->qty - $request->qty1;
+
+				$item->save();
 				//---------------- save item 1 --------------------
 				DoChild::create([
 					'parent_id'=>$request->parent_id,
@@ -108,6 +117,12 @@ class DOController extends Controller {
 			}
 			if(isset($inp['item2']))
 			{
+				//---------------- Edit Item qty 2 --------------------
+				$item = Item::find($request->item2);
+
+				$item->qty = $item->qty - $request->qty2;
+
+				$item->save();
 				//---------------- save item 2 --------------------
 				DoChild::create([
 					'parent_id'=>$request->parent_id,
@@ -121,6 +136,12 @@ class DOController extends Controller {
 			}
 			if(isset($inp['item3']))
 			{
+				//---------------- Edit Item qty 3 --------------------
+				$item = Item::find($request->item3);
+
+				$item->qty = $item->qty - $request->qty3;
+
+				$item->save();
 				//---------------- save item 3 --------------------
 				DoChild::create([
 					'parent_id'=>$request->parent_id,
@@ -133,6 +154,12 @@ class DOController extends Controller {
 			}
 			if(isset($inp['item4']))
 			{
+				//---------------- Edit Item qty 4 --------------------
+				$item = Item::find($request->item4);
+
+				$item->qty = $item->qty - $request->qty4;
+
+				$item->save();
 				//---------------- save item 4 --------------------
 				DoChild::create([
 					'parent_id'=>$request->parent_id,
@@ -145,6 +172,12 @@ class DOController extends Controller {
 			}
 			if(isset($inp['item5']))
 			{
+				//---------------- Edit Item qty 5 --------------------
+				$item = Item::find($request->item5);
+
+				$item->qty = $item->qty - $request->qty5;
+
+				$item->save();
 				//---------------- save item 5 --------------------
 				DoChild::create([
 					'parent_id'=>$request->parent_id,
@@ -157,6 +190,12 @@ class DOController extends Controller {
 			}
 			if(isset($inp['item6']))
 			{
+				//---------------- Edit Item qty 6 --------------------
+				$item = Item::find($request->item6);
+
+				$item->qty = $item->qty - $request->qty6;
+
+				$item->save();
 				//---------------- save item 6 --------------------
 				DoChild::create([
 					'parent_id'=>$request->parent_id,
@@ -169,6 +208,12 @@ class DOController extends Controller {
 			}
 			if(isset($inp['item7']))
 			{
+				//---------------- Edit Item qty 7 --------------------
+				$item = Item::find($request->item7);
+
+				$item->qty = $item->qty - $request->qty7;
+
+				$item->save();
 				//---------------- save item 7 --------------------
 				DoChild::create([
 					'parent_id'=>$request->parent_id,
@@ -181,6 +226,12 @@ class DOController extends Controller {
 			}
 			if(isset($inp['item8']))
 			{
+				//---------------- Edit Item qty 8 --------------------
+				$item = Item::find($request->item8);
+
+				$item->qty = $item->qty - $request->qty8;
+
+				$item->save();
 				//---------------- save item 8 --------------------
 				DoChild::create([
 					'parent_id'=>$request->parent_id,
@@ -193,6 +244,12 @@ class DOController extends Controller {
 			}
 			if(isset($inp['item9']))
 			{
+				//---------------- Edit Item qty 9 --------------------
+				$item = Item::find($request->item9);
+
+				$item->qty = $item->qty - $request->qty9;
+
+				$item->save();
 				//---------------- save item 9 --------------------
 				DoChild::create([
 					'parent_id'=>$request->parent_id,
@@ -205,6 +262,12 @@ class DOController extends Controller {
 			}
 			if(isset($inp['item10']))
 			{
+				//---------------- Edit Item qty 10 --------------------
+				$item = Item::find($request->item10);
+
+				$item->qty = $item->qty - $request->qty10;
+
+				$item->save();
 				//---------------- save item 10 --------------------
 				DoChild::create([
 					'parent_id'=>$request->parent_id,
@@ -216,12 +279,12 @@ class DOController extends Controller {
 				// echo $inp['item10']."<br><br>";
 			}
 			$iv->save();
-			echo "yahman!";
-			// return Redirect::to('/do/show/'.$request->parent_id);
+			// echo "yahman!";
+			return Redirect::to('/deliveryordero/show/'.$request->parent_id);
 		}
 		catch (Exception $e)
 		{
-			return "mati anjeng";
+			return "Error!";
 		}
  	}
 
@@ -233,7 +296,11 @@ class DOController extends Controller {
 	 */
 	public function show($id)
 	{
-		//
+		$do = InvoiceParent::find($id);
+		$dochild = DoChild::where('parent_id',$do->id)->get();
+		// $piutang = Piutang::where('invoice_parent_id',$id)->pluck('total');
+
+		return view('DO.show',array('do'=>$do, 'dochilds'=> $dochild));
 	}
 
 	/**

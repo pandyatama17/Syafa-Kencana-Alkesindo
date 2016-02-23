@@ -92,10 +92,11 @@
                      <li>
                        <a href="{{url('/storage/invoice/list')}}"><i class="fa fa-files-o"></i> <span class="nav-label">Invoice</span></a>
                      </li>
-                     <li>
-                       <a href="{{url('/supplier')}}"><i class="fa fa-file-text"></i> <span class="nav-label">Delivery Order</span></a>
-                     </li>
                   @endif
+                     <li>
+                       <a href="{{url('/deliveryorder')}}"><i class="fa fa-file-text"></i> <span class="nav-label">Delivery Order</span></a>
+                     </li>
+                  @if(Session::get('user')->user_level == 'gudang')
                    <li>
                        <a href="{{url('/supplier')}}"><i class="fa fa-truck"></i> <span class="nav-label">Supplier</span></a>
                    </li>

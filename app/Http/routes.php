@@ -79,9 +79,10 @@ Route::get('/invoice/changedatavalue={id}', 'InvoiceController@changedatavalue')
 Route::any('/invoice',"InvoiceController@index");
 Route::get('/invoice/show/{id}', 'InvoiceController@show');
 
+Route::any('/deliveryorder', 'DOController@index');
 Route::any('/deliveryorder/create', 'DOController@create');
 Route::any('/deliveryorder/create/base/{id}', 'DOController@createWithInvoice');
-Route::any('/deliveryorder/create/itembase/{id}', 'DOController@createWithItem');
+Route::any('/deliveryorder/show/{id}', 'DOController@show');
 Route::post('/deliveryorder/store', 'DOController@store');
 
 Route::any('/storage/invoice/list', 'InvoiceController@listPending');
