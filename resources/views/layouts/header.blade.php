@@ -61,13 +61,24 @@
 
                   @if(Session::get('user')->user_level == 'admin' || Session::get('user')->user_level == 'owner')
                    <li>
-                       <a href="#" id="NavbarFinance"><i class="fa fa-archive"></i> <span class="nav-label">Finance</span> <span class="fa arrow"></span></a>
+                       <a href="#" id="NavbarFinance"><i class="fa fa-archive"></i> <span class="nav-label">Invoice</span> <span class="fa arrow"></span></a>
                        <ul class="nav nav-second-level">
                            <li><a href="{{url('/invoice')}}">Data Invoice</a></li>
                            <li><a href="{{url('/invoice/create')}}">Tambah Invoice</a></li>
-                           <li><a href="{{url('/storage')}}">Data Piutang</a></li>
                            {{-- <li><a href="/assets/dashboard_4_1.html">Dashboard v.4</a></li> --}}
                        </ul>
+                   </li>
+                   <li>
+                       <a href="#" id="NavbarPiutang"><i class="fa fa-usd"></i> <span class="nav-label">Piutang</span> <span class="fa arrow"></span></a>
+                       <ul class="nav nav-second-level">
+                           <li><a href="{{url('piutang/all')}}">Semua Piutang</a></li>
+                           <li><a href="{{url('piutang/clear')}}">Piutang Lunas</a></li>
+                           <li><a href="{{url('/invoice/create')}}">Piutang Belum Lunas</a></li>
+                           {{-- <li><a href="/assets/dashboard_4_1.html">Dashboard v.4</a></li> --}}
+                       </ul>
+                   </li>
+                   <li>
+                      <a href="{{url('/deliveryorder')}}"><i class="fa fa-file-text"></i> <span class="nav-label">Delivery Order</span></a>
                    </li>
                   @endif
                   @if(Session::get('user')->user_level == 'gudang' || Session::get('user')->user_level == 'owner')
@@ -92,11 +103,10 @@
                      <li>
                        <a href="{{url('/storage/invoice/list')}}"><i class="fa fa-files-o"></i> <span class="nav-label">Invoice</span></a>
                      </li>
-                  @endif
                      <li>
                        <a href="{{url('/deliveryorder')}}"><i class="fa fa-file-text"></i> <span class="nav-label">Delivery Order</span></a>
                      </li>
-                  @if(Session::get('user')->user_level == 'gudang')
+                  @endif
                    <li>
                        <a href="{{url('/supplier')}}"><i class="fa fa-truck"></i> <span class="nav-label">Supplier</span></a>
                    </li>

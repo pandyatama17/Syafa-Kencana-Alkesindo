@@ -10,7 +10,13 @@
                <a href="{{url()}}">SKA</a>
             </li>
             <li>
-               <a href="{{url('/storage')}}">Storage</a>
+               @if(Session::get('user')->user_level == 'gudang')
+                  <a href="{{url('storage')}}">Storage</a>
+               @elseif(Session::get('user')->user_level == 'admin')
+                  <a href="{{url('finance')}}">Finance</a>
+               @elseif(Session::get('user')->user_level == 'owner')
+                  <a href="{{url('owner')}}">Menu</a>
+               @endif
             </li>
             <li class="active">
                <strong>Delivery Order</strong>

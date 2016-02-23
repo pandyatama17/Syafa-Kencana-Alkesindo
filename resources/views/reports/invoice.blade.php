@@ -2,23 +2,24 @@
 <html>
 <head>
     <script type="text/javascript" src="/materialize/dist/js/jquery-2.2.0.min.js"></script>
-    <script type="text/javascript" src="/materialize/dist/js/materialize.min.js"></script>
-    <link type="text/css" rel="stylesheet" href="/materialize/dist/css/materialize.min.css"  media="screen,projection"/>
+    {{-- <script type="text/javascript" src="/materialize/dist/js/materialize.min.js"></script> --}}
+    {{-- <link type="text/css" rel="stylesheet" href="/materialize/dist/css/materialize.min.css"  media="screen,projection"/> --}}
     <script src="/jquery.PrintArea.js" type="text/JavaScript" language="javascript"></script>
 
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
     {{-- <link type="text/css" rel="stylesheet" href="PrintArea.css" /> --}}
-    <nav>
-        <div class="nav-wrapper">
-            <a href="/" class="brand-logo" style="margin-left:20px">Invoice</a>
-            <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li>
-                    <button type="button" id="printBtn" class="button b1 waves-effect waves-light btn-large " name="button">Print</button>
-                </li>
-                <li class="linav">
-                  <a href="/finance/invoice/">back</a>
-                </li>
+    <nav style="background:#2c3e50; margin:-8px; height:50px; padding:10px; padding-bottom:0px; font-family: Arial">
+        <div class="nav-wrapper" >
+            <a href="/" style="margin-left:20px; font-family: Arial; text-decoration:none; color:white; font-size:20pt">Delivery Order</a>
+            <ul style="float:right">
+               <li style="float:left">
+                  <button type="button" name="printButton" class="button green" id="printBtn">Print</button>&nbsp;&nbsp;&nbsp;
+               </li>
+               <li style="float:right">
+                  <button type="button" name="backButton" class="button red" onclick="history.back(-1)">Back</button>
+               </li>
             </ul>
-        </div>
+         </div>
     </nav>
 
     <meta charset="utf-8">
@@ -162,7 +163,7 @@
          {
             $(this).text(rupiah($(this).text()));
          });
-          $("#printBtn").on('click',function functionName()
+          $("#printBtn").click(function functionName()
           {
               $("#InvoiceArea").printArea({
                     mode       : "popup",

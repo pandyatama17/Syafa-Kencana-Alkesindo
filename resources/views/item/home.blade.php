@@ -9,7 +9,7 @@
 						<a href="{{url()}}">SKA</a>
 					</li>
 					<li class="active">
-						<strong>Home</strong>
+						<strong>Storage</strong>
 					</li>
 				</ol>
 		</div>

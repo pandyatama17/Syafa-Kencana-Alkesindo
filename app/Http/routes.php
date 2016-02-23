@@ -86,3 +86,6 @@ Route::any('/deliveryorder/show/{id}', 'DOController@show');
 Route::post('/deliveryorder/store', 'DOController@store');
 
 Route::any('/storage/invoice/list', 'InvoiceController@listPending');
+
+Route::any('/piutang/all', 'PiutangController@showAll');
+Route::any('/piutang/clear', 'PiutangController@showLunas');

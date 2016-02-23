@@ -10,7 +10,7 @@
                <a href="{{url()}}">SKA</a>
             </li>
             <li>
-               <a href="{{url()}}">Finance</a>
+               <a href="{{url('finance')}}">Finance</a>
             </li>
             <li class="active">
                <strong>Invoice</strong>

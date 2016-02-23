@@ -13,6 +13,22 @@ class PiutangController extends Controller {
 	 *
 	 * @return Response
 	 */
+	 public function showAll()
+	 {
+		 $ptgs = Piutang::all();
+
+		 $pagin = "Piutang (semua data)";
+
+ 		return view('piutang.list')->with('ptgs', $ptgs)->with('pagin', $pagin);
+	 }
+	public function showLunas()
+	{
+		$ptgs = Piutang::where('status','ok');
+
+		$pagin = "Piutang Lunas";
+
+	  return view('piutang.list')->with('ptgs', $ptgs)->with('pagin', $pagin);
+	}
 	public function index()
 	{
 		//
