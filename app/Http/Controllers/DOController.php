@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Input;
 //--------------
 use Redirect;
 use DB;
+use Session;
 //--------------
 use App\Item;
 use App\User;
@@ -28,6 +29,10 @@ class DOController extends Controller {
 	 */
 	public function index()
 	{
+		if(!Session::has('user'))
+		{
+			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+		}
 		$dos = DeliveryOrder::all();
 
 		return view('DO.list')->with('dos', $dos);
@@ -40,6 +45,10 @@ class DOController extends Controller {
 	 */
 	public function create()
 	{
+		if(!Session::has('user'))
+		{
+			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+		}
 		$sales = User::where('user_level','=','sales')->get();
 		$items = Item::all();
 		// print_r($items);
@@ -48,6 +57,10 @@ class DOController extends Controller {
 	}
 	public function createWithInvoice($id)
 	{
+		if(!Session::has('user'))
+		{
+			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+		}
 		$sales = User::where('user_level','=','sales')->get();
 		$items = Item::all();
 		$iv  = InvoiceParent::find($id);
@@ -61,6 +74,10 @@ class DOController extends Controller {
 	}
 	public function createWithItem($id)
 	{
+		if(!Session::has('user'))
+		{
+			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+		}
 		$sales = User::where('user_level','=','sales')->get();
 		$items = Item::all();
 		$item = Item::find($id);
@@ -77,6 +94,10 @@ class DOController extends Controller {
 	 */
 	public function store(Request $request)
 	{
+		if(!Session::has('user'))
+		{
+			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+		}
 		$inp = Input::all();
 		try
 		{
@@ -296,6 +317,10 @@ class DOController extends Controller {
 	 */
 	public function show($id)
 	{
+		if(!Session::has('user'))
+		{
+			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+		}
 		$do = InvoiceParent::find($id);
 		$dochild = DoChild::where('parent_id',$do->id)->get();
 		// $piutang = Piutang::where('invoice_parent_id',$id)->pluck('total');

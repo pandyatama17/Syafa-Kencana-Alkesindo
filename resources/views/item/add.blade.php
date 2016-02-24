@@ -1,9 +1,9 @@
 @extends('layouts.header')
 
 @section('content')
-   <link rel="stylesheet" href="/assets/css/plugins/chosen/chosen.css" media="screen" title="no title" charset="utf-8">
-   <link rel="stylesheet" href="/css/chosen-bootstrap.css" media="screen" title="no title" charset="utf-8">
-   <link rel="stylesheet" href="/swal/dist/sweetalert.css" media="screen" title="no title" charset="utf-8">
+   <link rel="stylesheet" href="{{asset('assets/css/plugins/chosen/chosen.css')}}" media="screen" title="no title">
+   <link rel="stylesheet" href="{{asset('css/chosen-bootstrap.css')}}" media="screen" title="no title">
+   <link rel="stylesheet" href="{{asset('swal/dist/sweetalert.css')}}" media="screen" title="no title">
 	<div class="row wrapper border-bottom white-bg page-heading">
 		<div class="col-sm-4">
 			<h2>Home</h2>
@@ -120,13 +120,13 @@
             </div>
          </div>
 
-<script src="/assets/js/jquery-2.1.1.js"></script>
-<script src="/assets/js/bootstrap.min.js"></script>
-<script src="/assets/js/plugins/datapicker/bootstrap-datepicker.js"></script>
-<script src="/assets/js/plugins/chosen/chosen.jquery.js"></script>
-<script src="/jquery.validate.min.js" charset="utf-8"></script>
-<script src="/swal/dist/sweetalert.min.js" charset="utf-8"></script>
-<script src="/jquery.form.js" charset="utf-8"></script>
+<script src="{{asset('/assets/js/jquery-2.1.1.js')}}"></script>
+<script src="{{asset('/assets/js/bootstrap.min.js')}}"></script>
+<script src="{{asset('/assets/js/plugins/datapicker/bootstrap-datepicker.js')}}"></script>
+<script src="{{asset('/assets/js/plugins/chosen/chosen.jquery.js')}}"></script>
+<script src="{{asset('/jquery.validate.min.js')}}"></script>
+<script src="{{asset('/swal/dist/sweetalert.min.js')}}"></script>
+<script src="{{asset('/jquery.form.js')}}"></script>
 <script type="text/javascript">
  $(document).ready(function()
  {

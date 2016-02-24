@@ -5,6 +5,8 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use App\Piutang;
+use Session;
+use Redirect;
 
 class PiutangController extends Controller {
 
@@ -15,6 +17,10 @@ class PiutangController extends Controller {
 	 */
 	 public function showAll()
 	 {
+		 if(!Session::has('user'))
+	   {
+		   return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+	   }
 		 $ptgs = Piutang::all();
 
 		 $pagin = "Piutang (semua data)";
@@ -23,6 +29,10 @@ class PiutangController extends Controller {
 	 }
 	public function showLunas()
 	{
+		if(!Session::has('user'))
+		{
+			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+		}
 		$ptgs = Piutang::where('status','ok')->get();
 
 		$pagin = "Piutang Lunas";
@@ -32,6 +42,10 @@ class PiutangController extends Controller {
 
 	public function showHutang()
 	{
+		if(!Session::has('user'))
+		{
+			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+		}
 		$ptgs = Piutang::where('status','Pending')->get();
 
 		$pagin = "Piutang Belum Lunas";
@@ -41,6 +55,10 @@ class PiutangController extends Controller {
 
 	public function check($id)
 	{
+		if(!Session::has('user'))
+		{
+			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+		}
 		$ptg = Piutang::find($id);
 		$ptg->status='ok';
 		$ptg->save();
@@ -49,6 +67,10 @@ class PiutangController extends Controller {
 	}
 	public function index()
 	{
+		if(!Session::has('user'))
+		{
+			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+		}
 		//
 	}
 
@@ -59,6 +81,10 @@ class PiutangController extends Controller {
 	 */
 	public function create()
 	{
+		if(!Session::has('user'))
+		{
+			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+		}
 		//
 	}
 
@@ -69,6 +95,10 @@ class PiutangController extends Controller {
 	 */
 	public function store()
 	{
+		if(!Session::has('user'))
+		{
+			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+		}
 		//
 	}
 
@@ -80,6 +110,10 @@ class PiutangController extends Controller {
 	 */
 	public function show($id)
 	{
+		if(!Session::has('user'))
+		{
+			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+		}
 		//
 	}
 
@@ -91,6 +125,10 @@ class PiutangController extends Controller {
 	 */
 	public function edit($id)
 	{
+		if(!Session::has('user'))
+		{
+			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+		}
 		//
 	}
 
@@ -102,6 +140,10 @@ class PiutangController extends Controller {
 	 */
 	public function update($id)
 	{
+		if(!Session::has('user'))
+		{
+			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+		}
 		//
 	}
 
@@ -113,6 +155,10 @@ class PiutangController extends Controller {
 	 */
 	public function destroy($id)
 	{
+		if(!Session::has('user'))
+		{
+			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+		}
 		//
 	}
 

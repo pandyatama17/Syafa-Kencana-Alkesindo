@@ -15,6 +15,13 @@ class UserController extends Controller {
 	 *
 	 * @return Response
 	 */
+	 public function __construct()
+	 {
+	 	if(!Session::has('user'))
+		{
+			redirect(url("login"));
+		}
+	 }
 	public function showLogin()
 	{
 		return view('login');
@@ -60,6 +67,68 @@ class UserController extends Controller {
 						->withInput(Input::except('password'));
 					}
 	}
+
+	public function profile()
+	{
+		if(!Session::has('user'))
+		{
+			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+		}
+		$user = User::find(Session::get('user')->id);
+		return view('user.profile')->with('user', $user);
+	}
+
+	public function profileUpdateInfo(Request $req)
+	{
+		if(!Session::has('user'))
+		{
+			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+		}
+		return $req->username." ".$req->birthdate." ".$req->birthplace." ".$req->address;
+	}
+
+	public function profileChangePassword(Request $req)
+	{
+		if(!Session::has('user'))
+		{
+			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+		}
+		return $req;
+	}
+
+	public function updateAvatar(Request $req)
+	{
+		if(!Session::has('user'))
+		{
+			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+		}
+			try
+			{
+				$user = User::find(Session::get('user')->id);
+
+				if (Input::hasFile('image'))
+				{
+					$file     = Input::file('image');
+					$filename = $req->image.'.'.$file->getClientOriginalExtension();
+
+					$destinationPath = public_path().'/img/user';
+					$file->move($destinationPath, $filename);
+					$user->avatar = $filename;
+				}
+				$user->save();
+				// Session::push('user','avatar') = $filename;
+
+				$arr = array('err'=>false,'msg'=>'Avatar Profil telah diupdate!');
+				echo json_encode($arr);
+			}
+			catch(Exception $e)
+			{
+				$arr = array('err'=>true,'msg'=>'Error');
+				echo json_encode($arr);
+			}
+
+	}
+
 	public function logout()
 	{
 		# code...
@@ -68,7 +137,13 @@ class UserController extends Controller {
 	}
 	public function index()
 	{
-		//
+		if(!Session::has('user'))
+		{
+			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+		}
+		$users = User::all();
+
+		return view('user.admin.list')->with('users', $users);
 	}
 
 	/**

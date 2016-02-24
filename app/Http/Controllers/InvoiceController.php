@@ -14,6 +14,7 @@ use App\InvoiceChild;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Redirect;
+use Session;
 
 class InvoiceController extends Controller {
 
@@ -22,8 +23,20 @@ class InvoiceController extends Controller {
 	 *
 	 * @return Response
 	 */
+	public function __construct()
+	 {
+	 	if(!Session::has('user'))
+		{
+			return redirect(url("login"));
+		}
+	 }
+
 	public function index()
 	{
+		if(!Session::has('user'))
+		{
+			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+		}
 		$iv = InvoiceParent::all();
       return view('invoice.list',array('ivs'=>$iv));
 	}
@@ -35,6 +48,10 @@ class InvoiceController extends Controller {
 	 */
 	public function createInvoice()
  	{
+		if(!Session::has('user'))
+		{
+			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+		}
  		$sales = User::where('user_level','=','sales')->get();
 		$items = Item::all();
 		// print_r($items);
@@ -43,6 +60,10 @@ class InvoiceController extends Controller {
  	}
 	public function old()
 	{
+		if(!Session::has('user'))
+		{
+			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+		}
 		$sales = User::where('user_level','=','sales')->get();
 		$items = Item::all();
 		return view('invoice.old',array('sales'=>$sales))->with('items', $items);
@@ -55,12 +76,20 @@ class InvoiceController extends Controller {
 	 */
 	 public function getItemData($id)
 	 {
+		 if(!Session::has('user'))
+	   {
+		   return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+	   }
 		$item = Item::find($id);
  		echo json_encode($item);
 	 }
 
 	public function storeInvoice(Request $request)
  	{
+		if(!Session::has('user'))
+		{
+			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+		}
 		$inp = Input::all();
 		try
 		{
@@ -163,6 +192,10 @@ class InvoiceController extends Controller {
  	}
 	public function changedatavalue($id)
 	{
+		if(!Session::has('user'))
+		{
+			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+		}
 		return $id;
 	}
 
@@ -179,6 +212,10 @@ class InvoiceController extends Controller {
 	 */
 	public function show($id)
 	{
+		if(!Session::has('user'))
+		{
+			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+		}
 		$iv = InvoiceParent::find($id);
 		$ivchild = InvoiceChild::where('parent_id',$iv->id)->get();
 		$piutang = Piutang::where('invoice_parent_id',$id)->pluck('total');
@@ -222,6 +259,10 @@ class InvoiceController extends Controller {
 	}
 	public function listPending()
 	{
+		if(!Session::has('user'))
+		{
+			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+		}
 		$iv = InvoiceParent::where('status','pending')->get();
 
 		return view('invoice.storage.list')->with('ivs', $iv);

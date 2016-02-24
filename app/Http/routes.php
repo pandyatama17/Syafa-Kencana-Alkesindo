@@ -91,3 +91,9 @@ Route::any('/piutang/all', 'PiutangController@showAll');
 Route::any('/piutang/clear', 'PiutangController@showLunas');
 Route::any('/piutang/pending', 'PiutangController@showHutang');
 Route::get('/piutang/check/{id}', 'PiutangController@check');
+
+Route::get('/profile', 'UserController@profile');
+Route::post('/profile/updateinfo', 'UserController@profileUpdateInfo');
+Route::post('/profile/changepassword', 'UserController@profileChangePassword');
+Route::post('/profile/updateimage', 'UserController@updateAvatar');
+Route::any('/user/list', 'UserController@index');

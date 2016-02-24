@@ -10,6 +10,8 @@ use App\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use File;
+use Session;
+use Redirect;
 
 class ItemController extends Controller {
 
@@ -20,6 +22,10 @@ class ItemController extends Controller {
 	 */
 	public function index()
 	{
+		if(!Session::has('user'))
+		{
+			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+		}
 		$items = Item::all();
 		return view('item.home',array('items'=>$items,'page'=>''));
 	}
@@ -31,18 +37,30 @@ class ItemController extends Controller {
 	 */
 	public function showlist()
  	{
+		if(!Session::has('user'))
+		{
+			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+		}
  		$items = Item::all();
  		return view('item.list',array('items'=>$items,'page'=>'list'));
  	}
 
 	public function restock()
 	{
+		if(!Session::has('user'))
+		{
+			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+		}
 		$items = Item::all();
 		return view('item.restock',array('items'=>$items,'page'=>'restock'));
 	}
 
 	public function itemInSave()
 	{
+		if(!Session::has('user'))
+		{
+			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+		}
 		$input = Input::all();
 
 		$item = Item::find($input['item']);
@@ -79,6 +97,10 @@ class ItemController extends Controller {
 
 	public function addItem()
 	{
+		if(!Session::has('user'))
+		{
+			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+		}
 		$suppliers = Supplier::all();
 		return view('item.add',array('page'=>'list','suppliers' => $suppliers));
 	}
@@ -91,6 +113,10 @@ class ItemController extends Controller {
 	 */
 	public function storeItem()
 	{
+		if(!Session::has('user'))
+		{
+			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+		}
 			$ip = Input::all();
 
 			if (Input::hasFile('image'))
@@ -150,6 +176,10 @@ class ItemController extends Controller {
 
 	public function itemOut()
 	{
+		if(!Session::has('user'))
+		{
+			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+		}
 		$input = Input::all();
 
 		if (!isset($input['chk']))
@@ -209,6 +239,10 @@ class ItemController extends Controller {
 	 */
 	public function showOutPage()
 	{
+		if(!Session::has('user'))
+		{
+			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+		}
 		$item = Item::all();
 		return view ('item.out',array('items'=>$item,'page'=>'out'));
 	}
@@ -221,6 +255,10 @@ class ItemController extends Controller {
 	 */
 	public function getItemData($id)
 	{
+		if(!Session::has('user'))
+		{
+			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+		}
 		$id = Input::get('id');
 		$item = Item::find($id);
 		$trans = Transaction::where('transaction_type','out')->get();
@@ -235,6 +273,10 @@ class ItemController extends Controller {
 	 */
 	public function createDO()
 	{
+		if(!Session::has('user'))
+		{
+			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+		}
         $trs = Transaction::where('transaction_type','out')->get();
 		return view ('item.createDO',array('trs'=>$trs,'page'=>'DO'));
 	}
@@ -247,12 +289,20 @@ class ItemController extends Controller {
 	 */
      public function getItemsForDO($id)
      {
+		  if(!Session::has('user'))
+  		{
+  			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+  		}
 		 $items = Transaction::where('PO_DO_id', $id)->get();
          echo json_encode($items);
      }
 
 	public function storeDO()
 	{
+		if(!Session::has('user'))
+		{
+			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+		}
         $input = Input::all();
         $activeuser = \Session::get('user')->id;
 
@@ -281,6 +331,10 @@ class ItemController extends Controller {
 	}
     public function showDO($id)
     {
+		 if(!Session::has('user'))
+	   {
+		   return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+	   }
         $do = DeliveryOrder::where('DO_id',$id)->get();
 
         return view('reports.DO',array('deliveryorder'=>$do));
@@ -294,12 +348,20 @@ class ItemController extends Controller {
 	 */
 	public function restockItem($id)
 	{
+		if(!Session::has('user'))
+		{
+			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+		}
 		$item = Item::find($id);
 		$items = Item::all();
 		return view('item.restock',array('page'=>'restock','item'=>$item,'items'=>$items));
 	}
 	public function show($id)
 	{
+		if(!Session::has('user'))
+		{
+			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+		}
 		$it = Item::find($id);
 		$sups = SUpplier::all();
 		$selectedsup = Supplier::find($it->supplier_id);
@@ -307,6 +369,10 @@ class ItemController extends Controller {
 	}
 	public function update()
 	{
+		if(!Session::has('user'))
+		{
+			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+		}
 			$ip = Input::all();
 
 
@@ -344,6 +410,10 @@ class ItemController extends Controller {
 	}
 	public function destroy($id)
 	{
+		if(!Session::has('user'))
+		{
+			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+		}
 		$it = Item::find($id);
 		try
 		{

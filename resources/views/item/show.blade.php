@@ -201,22 +201,22 @@
            $('#CardAction').click();
         });
 
-        function readURL(input) {
-
-         if (input.files && input.files[0]) {
-              var reader = new FileReader();
-
-              reader.onload = function (e) {
+        function readURL(input)
+		  {
+         	if (input.files && input.files[0])
+				{
+              	var reader = new FileReader();
+					reader.onload = function (e)
+					{
                   $('#prev').attr('src', e.target.result);
-              }
-
-              reader.readAsDataURL(input.files[0]);
-          }
-      }
-
-      $("#image").change(function(){
-          readURL(this);
-      });
+              	}
+					reader.readAsDataURL(input.files[0]);
+          	}
+			}
+			$("#image").change(function()
+			{
+         	readURL(this);
+      	});
    });
 	$(".deleteBtn").click(function()
    {

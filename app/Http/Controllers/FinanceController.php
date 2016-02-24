@@ -18,6 +18,13 @@ class FinanceCOntroller extends Controller {
 	 *
 	 * @return Response
 	 */
+	 public function __construct()
+	 {
+	 	if(!Session::has('user'))
+		{
+			redirect(url("login"));
+		}
+	 }
 	public function index()
 	{
 		return view('finance.home',array('page'=>'menu'));

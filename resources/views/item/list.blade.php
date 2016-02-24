@@ -33,7 +33,7 @@
   <div class="row">
       <div class="col-lg-12">
           <div class="wrapper wrapper-content">
-              <div class="box animated flipInX">
+              <div class="box animated bounceInUp">
                   <h3 class="font-bold">Daftar Barang</h3>
 
                       <table class="table table-striped table-bordered table-hover dataTables-example" >

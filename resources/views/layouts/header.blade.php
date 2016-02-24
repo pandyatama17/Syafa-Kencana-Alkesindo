@@ -9,16 +9,16 @@
 
     <title>Syafa Kencana Alkesindo</title>
 
-    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/assets/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="{{asset('assets/css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{asset('assets/font-awesome/css/font-awesome.css')}}" rel="stylesheet">
 
-    <link href="/assets/css/animate.css" rel="stylesheet">
-    <link href="/assets/css/style.css" rel="stylesheet">
+    <link href="{{asset('assets/css/animate.css')}}" rel="stylesheet">
+    <link href="{{asset('assets/css/style.css')}}" rel="stylesheet">
 
-    <link rel="stylesheet" href="/swal/dist/sweetalert.css" media="screen" title="no title" charset="utf-8">
+    <link rel="stylesheet" href="{{asset('swal/dist/sweetalert.css')}}" media="screen" title="no title" charset="utf-8">
 
-    <script src="/assets/js/jquery-2.1.1.js"></script>
-    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="{{asset('assets/js/jquery-2.1.1.js')}}"></script>
+    <script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
 </head>
 
 <body>
@@ -34,7 +34,14 @@
                           <span>
                             <img alt="image" class="img-circle" src="/img/user/{{Session::get('user')->avatar}}" style="width:75px; height:75px"/>
                          </span>
-                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                         <a href="#" class="block m-t-xs">
+                            <strong class="font-bold">{{Session::get('user')->name}}</strong>
+                            <br>
+                            <a href="{{url('profile')}}">
+                               {{Session::get('user')->user_level}} <i class="fa fa-gear"></i>
+                            </a>
+                         </a>
+                         {{-- <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <span class="clear">
                                <span class="block m-t-xs">
                                   <strong class="font-bold">{{Session::get('user')->name}}</strong>
@@ -50,7 +57,7 @@
                             <li><a href="/assets/mailbox.html">Mailbox</a></li>
                             <li class="divider"></li>
                             <li><a href="/assets/login.html">Logout</a></li>
-                        </ul>
+                        </ul> --}}
                         @endif
                     </div>
                     <div class="logo-element">
@@ -151,18 +158,18 @@
       </div>
    </div>
 </div>
-   <link rel="stylesheet" href="/plugins/sf-flash/jquery.sf-flash.min.css" media="screen" title="no title" charset="utf-8">
+   <link rel="stylesheet" href="{{asset('plugins/sf-flash/jquery.sf-flash.min.css')}}" media="screen" title="no title" charset="utf-8">
 
     <!-- Mainly scripts -->
-    <script src="/assets/js/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="/assets/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-    <script src="/assets/js/plugins/jeditable/jquery.jeditable.js"></script>
+    <script src="{{asset('assets/js/plugins/metisMenu/jquery.metisMenu.js')}}"></script>
+    <script src="{{asset('assets/js/plugins/slimscroll/jquery.slimscroll.min.js')}}"></script>
+    <script src="{{asset('assets/js/plugins/jeditable/jquery.jeditable.js')}}"></script>
 
     <!-- Custom and plugin javascript -->
-    <script src="/assets/js/inspinia.js"></script>
-    <script src="/assets/js/plugins/pace/pace.min.js"></script>
-    <script src="/plugins/sf-flash/jquery.sf-flash.min.js" charset="utf-8"></script>
-    <script src="/swal/dist/sweetalert.min.js" charset="utf-8"></script>
+    <script src="{{asset('assets/js/inspinia.js')}}"></script>
+    <script src="{{asset('assets/js/plugins/pace/pace.min.js')}}"></script>
+    <script src="{{asset('plugins/sf-flash/jquery.sf-flash.min.js')}}"></script>
+    <script src="{{asset('swal/dist/sweetalert.min.js')}}"></script>
 
 </body>
 
