@@ -46,7 +46,9 @@
                            </h2>
                               <small>{{$item->id}}</small>
                            </div>
-                           <img src="/img/item/{{$item->image}}" class="img-rounded rounded-border m-b-md img-responsive" alt="profile" id="ItemImage">
+									<center>
+                           	<img src="/img/item/{{$item->image}}" class="img-rounded rounded-border m-b-md img-responsive" alt="profile" id="ItemImage">
+									</center>
                            <div class="text-right">
                               {{-- <a class="btn btn-xs btn-primary"><i class="fa fa-edit"></i> Edit</a> --}}
                               <a class="btn btn-xs btn-primary" id="CardAction"><i class="fa fa-edit"></i> Edit</a>

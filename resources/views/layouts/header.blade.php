@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html @if(!Session::has('user'))style="background:#F3F3F4"@endif>
 
 <head>
    <link rel="icon" href="/ska.ico">
@@ -25,6 +25,7 @@
 
     <div id="wrapper">
 
+   @if(Session::has('user'))
     <nav class="navbar-default navbar-static-side" role="navigation">
         <div class="sidebar-collapse">
             <ul class="nav" id="side-menu">
@@ -32,7 +33,7 @@
                     <div class="dropdown profile-element">
                        @if(Session::has('user'))
                           <span>
-                            <img alt="image" class="img-circle" src="/img/user/{{Session::get('user')->avatar}}" style="width:75px; height:75px"/>
+                            <img alt="image" class="img-circle" src="{{url()}}/img/user/{{Session::get('user')->avatar}}" style="width:75px; height:75px"/>
                          </span>
                          <a href="#" class="block m-t-xs">
                             <strong class="font-bold">{{Session::get('user')->name}}</strong>
@@ -41,23 +42,6 @@
                                {{Session::get('user')->user_level}} <i class="fa fa-gear"></i>
                             </a>
                          </a>
-                         {{-- <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <span class="clear">
-                               <span class="block m-t-xs">
-                                  <strong class="font-bold">{{Session::get('user')->name}}</strong>
-                               </span>
-                               {{Session::get('user')->user_level}} <b class="caret"></b>
-                               <span class="text-muted text-xs block">
-                               </span>
-                            </span>
-                         </a>
-                         <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                            <li><a href="/assets/profile.html">Profile</a></li>
-                            <li><a href="/assets/contacts.html">Contacts</a></li>
-                            <li><a href="/assets/mailbox.html">Mailbox</a></li>
-                            <li class="divider"></li>
-                            <li><a href="/assets/login.html">Logout</a></li>
-                        </ul> --}}
                         @endif
                     </div>
                     <div class="logo-element">
@@ -71,7 +55,7 @@
                        <a href="#" id="NavbarFinance"><i class="fa fa-archive"></i> <span class="nav-label">Invoice</span> <span class="fa arrow"></span></a>
                        <ul class="nav nav-second-level">
                            <li><a href="{{url('/invoice')}}">Data Invoice</a></li>
-                           <li><a href="{{url('/invoice/create')}}">Tambah Invoice</a></li>
+                           <li><a href="{{url('/invoice/create')}}">Tambah Invoice Baru</a></li>
                            {{-- <li><a href="/assets/dashboard_4_1.html">Dashboard v.4</a></li> --}}
                        </ul>
                    </li>
@@ -100,15 +84,15 @@
                                     @endif
                                  </a>
                               </li>
-                              <li><a href="{{url('/storage/add')}}">Tambah Barang</a></li>
+                              <li><a href="{{url('/storage/add')}}">Tambah Barang Baru</a></li>
                               <li><a href="{{url('/storage/restock')}}">Barang Masuk</a></li>
-                              {{-- <li><a href="/assets/dashboard_4_1.html">Dashboard v.4</a></li> --}}
+                              <li><a href="{{url('/storage/restock_report')}}">Laporan Barang Masuk</a></li>
                           </ul>
                       </li>
                   @endif
                   @if(Session::get('user')->user_level == 'gudang')
                      <li>
-                       <a href="{{url('/storage/invoice/list')}}"><i class="fa fa-files-o"></i> <span class="nav-label">Invoice</span></a>
+                       <a href="{{url('/storage/invoice/list')}}"><i class="fa fa-files-o"></i> <span class="nav-label">Data DO</span></a>
                      </li>
                      <li>
                        <a href="{{url('/deliveryorder')}}"><i class="fa fa-file-text"></i> <span class="nav-label">Delivery Order</span></a>
@@ -122,7 +106,6 @@
 
         </div>
     </nav>
-
         <div id="page-wrapper" class="gray-bg">
            <div class="row border-bottom">
            <nav class="navbar navbar-static-top  " role="navigation" style="margin-bottom: 0">
@@ -134,6 +117,7 @@
                       </div>
                   </form> --}}
               </div>
+           @endif
                <ul class="nav navbar-top-links navbar-right">
                    <li>
                       @if(Session::has('user'))

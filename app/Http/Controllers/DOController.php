@@ -86,16 +86,6 @@ class DOController extends Controller {
 		// return $items;
 		return view('DO.add',array('sales'=>$sales))->with('items', $items)->with('iv', $iv);
 	}
-	public function createWithItem($id)
-	{
-		$sales = User::where('user_level','=','sales')->get();
-		$items = Item::all();
-		$item = Item::find($id);
-		$iv  = InvoiceParent::find($id);
-		// print_r($items);
-		// return $items;
-		return view('DO.add',array('sales'=>$sales))->with('items', $items)->with('id', $id)->with('iv', $iv);
-	}
 
 	/**
 	 * Store a newly created resource in storage.

@@ -71,6 +71,38 @@ class MainController extends Controller {
 
 	}
 
+
+	public function destroySuppplier($id)
+	{
+		$sup = Supplier::find($id);
+
+		$items = Item::where('supplier_id',$sup->id)->get();
+
+		$arr = array();
+		foreach ($items as $res)
+		{
+		   array_push($arr, $res['qty']);
+		}
+		// print_r($arr);
+
+		if(!array_filter($arr))
+		{
+		   foreach ($items as $item)
+		   {
+		      // Item::destroy($item->id);
+				$it = Item::find($item->id);
+				$it->delete();
+		      // echo $it->id;
+		   }
+			$sup->delete();
+		   $foo = array('msg'=>'Supplier deleted!', 'err'=>false);
+		   echo json_encode($foo);
+		}
+		else {
+			$foo = array('msg'=>'there are still items left from '.$sup->supplier_name.' !', 'err'=>true);
+		   echo json_encode($foo);
+		}
+	}
 	/**
 	 * Show the form for editing the specified resource.
 	 *
@@ -95,6 +127,12 @@ class MainController extends Controller {
     public function sampDO()
 	{
 		return view('reports.DO');
+	}
+	public function itemInReport()
+	{
+		$trs = Transaction::all();
+
+		return view('reports.itemin')->with('trs', $trs);
 	}
 
 	/**

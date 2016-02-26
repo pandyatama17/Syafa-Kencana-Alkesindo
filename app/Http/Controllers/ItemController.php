@@ -126,6 +126,7 @@ class ItemController extends Controller {
 
 				$destinationPath = public_path().'/img/item';
 			    $file->move($destinationPath, $filename);
+				 $it->image = $filename;
 
 			}
 			$it = new Item;
@@ -136,7 +137,6 @@ class ItemController extends Controller {
 			$it->supplier_price = $ip['supplier_price'];
 			$it->resell_price = $ip['resell_price'];
 			$it->last_restock_date = $ip['transaction_date'];
-			$it->image = $filename;
 
 			if ($it->qty != 0)
 			{

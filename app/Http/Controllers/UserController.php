@@ -84,7 +84,26 @@ class UserController extends Controller {
 		{
 			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
 		}
-		return $req->username." ".$req->birthdate." ".$req->birthplace." ".$req->address;
+
+		// echo "<script>swal('ok','okeh')</script>";
+		$user = User::find($req->id);
+
+		$user->name = $req->name;
+		$user->birthdate = $req->birthdate;
+		$user->birthplace = $req->birthplace;
+		$user->address = $req->address;
+		try {
+			$user->save();
+			Session::forget('user');
+			Session::put('user', $user);
+			return Redirect::to(url('profile'));
+
+		} catch (Exception $e) {
+			return "fail!";
+		}
+
+		// return $req->address;
+		// return $req->username." ".$req->birthdate." ".$req->birthplace." ".$req->address.", id =".$req->id;
 	}
 
 	public function profileChangePassword(Request $req)
@@ -93,7 +112,38 @@ class UserController extends Controller {
 		{
 			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
 		}
-		return $req;
+		$inp = Input::all();
+		if ($req->password_old == Session::get('user')->password)
+		{
+			if($req->password_1 == $req->password_2)
+			{
+				$user = User::find(Session::get('user')->id);
+
+				$user->password = $req->password_1;
+
+				Session::forget('user');
+				Session::put('user', $user);
+
+				try
+				{
+					$user->save();
+					echo json_encode(array('err'=>false,'msg'=>'Password Telah Diubah!'));
+				}
+				catch (Exception $e)
+				{
+					echo json_encode(array('err'=>true,'msg'=>'Terjadi Kesalahan!'));
+				}
+			}
+			else
+			{
+				echo json_encode(array('err'=>true,'msg'=>'Password Tidak Sama!'));
+			}
+		}
+		else
+		{
+			echo json_encode(array('err'=>true,'msg'=>'Password Lama Anda Salah!'));
+		}
+
 	}
 
 	public function updateAvatar(Request $req)
@@ -117,6 +167,8 @@ class UserController extends Controller {
 				}
 				$user->save();
 				// Session::push('user','avatar') = $filename;
+				Session::forget('user');
+				Session::put('user', $user);
 
 				$arr = array('err'=>false,'msg'=>'Avatar Profil telah diupdate!');
 				echo json_encode($arr);
@@ -153,7 +205,7 @@ class UserController extends Controller {
 	 */
 	public function create()
 	{
-		//
+		return view('user.admin.create');
 	}
 
 	/**
@@ -161,9 +213,27 @@ class UserController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function store()
+	public function store(Request $req)
 	{
-		//
+		$user = new User;
+		$user->username = $req->username;
+		$user->name = $req->name;
+		$user->birthdate = $req->birthdate;
+		$user->birthplace = $req->birthplace;
+		$user->address = $req->address;
+		$user->user_level = $req->user_level;
+
+		try
+		{
+			$user->save();
+
+			echo json_encode(array('err'=>false,'msg'=>'User Telah Teradaftar!'));
+		}
+		catch (Exception $e)
+		{
+			echo json_encode(array('err'=>false,'msg'=>'User Tidak Dapat Didaftarkan!'));
+		}
+
 	}
 
 	/**

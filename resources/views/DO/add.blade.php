@@ -1,8 +1,7 @@
 <!doctype html>
 <html>
 <head>
-    <script type="text/javascript" src="/materialize/dist/js/jquery-2.2.0.min.js"></script>
-    <script type="text/javascript" src="/materialize/dist/js/materialize.min.js"></script>
+    <script type="text/javascript" src="/jquery.min.js"></script>
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     {{-- <link type="text/css" rel="stylesheet" href="/materialize/dist/css/materialize.min.css"  media="screen,projection"/> --}}
     {{-- <link href="/materialize/css/prism.css" rel="stylesheet"> --}}

@@ -34,7 +34,7 @@
 							<form class="form-horizontal" method="post" action="{{ action('ItemController@itemInSave') }}" id="restockForm">
 								{{-- PO Input --}}
 								<div class="form-group">
-                           <label class="col-sm-2 control-label">Purchase Order</label>
+                           <label class="col-sm-2 control-label">PO SKA #</label>
                            <div class="col-sm-10">
                               <input id="PO" name="PO" type="text" class="form-control">
                            </div>

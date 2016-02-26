@@ -11,8 +11,11 @@
 					<li>
 						<a href="{{url()}}">SKA</a>
 					</li>
+   				<li>
+   					<a href="{{url()}}">Gudang</a>
+   				</li>
 					<li class="active">
-						<strong>Home</strong>
+						<strong>Tambah Barang Baru</strong>
 					</li>
 				</ol>
 		</div>
@@ -87,7 +90,7 @@
                        <h5>Barang Masuk</h5>
                        {{-- PO Input --}}
                        <div class="form-group">
-                          <label class="col-sm-2 control-label">Purchase Order</label>
+                          <label class="col-sm-2 control-label">PO SKA #</label>
                           <div class="col-sm-10">
                              <input id="PO" name="PO" type="text" class="form-control">
                           </div>

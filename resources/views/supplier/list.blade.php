@@ -31,11 +31,11 @@
                     <table class="table table-striped table-bordered table-hover {{-- dataTables-example --}}" >
                        <thead>
                        <tr>
-                          <th style="background:#27ae60; color:white;">ID Supplier</th>
-                          <th style="background:#27ae60; color:white;">Nama Supplier</th>
-                          <th style="background:#27ae60; color:white;">Tanggal Restok Terakhir</th>
-                          <th style="background:#27ae60; color:white;">Barang Restok Terakhir</th>
-                          {{-- <th class="choices" style="background:#27ae60; color:white;">Pilihan</th> --}}
+                          <th style="background:#263949; color:white;">ID Supplier</th>
+                          <th style="background:#263949; color:white;">Nama Supplier</th>
+                          <th style="background:#263949; color:white;">Tanggal Restok Terakhir</th>
+                          <th style="background:#263949; color:white;">Barang Restok Terakhir</th>
+                          <th class="choices" style="background:#263949; color:white;">Pilihan</th>
                        </tr>
                        </thead>
                        <tbody>
@@ -52,22 +52,25 @@
                                      @endif
                                  </td>
                                   <td>
-                                     @if(isset($res->last_supply_item_id) || $res->last_supply_item_id == '0')
-                                        {!! $res->last_supply_item_id !!}
+                                     @if(isset($res->last_supply_item_id) && $res->last_supply_item_id != '0')
+                                        {{$res->last_supply_item_id}}
                                      @else
                                         -
                                      @endif
+                                  </td>
+                                  <td>
+                                     <a class="check" data-href="{{url('supplier/delete/'.$res->id)}}" id="{{$res->supplier_name}}"><i class="fa fa-trash"></i></a>
                                   </td>
                                 </tr>
                           @endforeach
                       </tbody>
                       <tfoot>
                       <tr>
-                        <th style="background:#27ae60; color:white;">ID Supplier</th>
-                        <th style="background:#27ae60; color:white;">Nama Supplier</th>
-                        <th style="background:#27ae60; color:white;">Tanggal Restok Terakhir</th>
-                        <th style="background:#27ae60; color:white;">Barang Restok Terakhir</th>
-                        {{-- <th class="choices" style="background:#27ae60; color:white;">Pilihan</th> --}}
+                        <th style="background:#263949; color:white;">ID Supplier</th>
+                        <th style="background:#263949; color:white;">Nama Supplier</th>
+                        <th style="background:#263949; color:white;">Tanggal Restok Terakhir</th>
+                        <th style="background:#263949; color:white;">Barang Restok Terakhir</th>
+                        <th class="choices" style="background:#263949; color:white;">Pilihan</th>
                       </tr>
                       </tfoot>
                    </table>
@@ -111,33 +114,95 @@
          //   }]
         });
 
-      //   $("tr").click(function()
-      //   {
-      //      var url = $(this).data('href');
-      //      var qty = $(this).data('qty');
-      //      var item = $(this).data('item');
-        //
-      //      if (qty == "0")
-      //      {
-      //         swal(
-      //         {
-      //            title: "Warning",
-      //            text: "Stok barang kosong! silahkan laukan pemesanan barang untuk "+item,
-      //            type: "warning",
-      //            showCancelButton: false,
-      //            // confirmButtonColor: "#DD6B55",
-      //            confirmButtonText: "Lanjut",
-      //            closeOnConfirm: false
-      //         }, function()
-      //         {
-      //            window.location.href = url;
-      //         });
-      //      }
-      //      else
-      //      {
-      //         window.location.href = url;
-      //      }
-      //   });
+        $(".check").click(function()
+       {
+          var url=$(this).data('href');
+          var supname = this.id;
+          if(url != "")
+          {
+             swal(
+             {
+                title: "Hapus Supplier",
+                text: "hapus "+supname+"? semua barang dengan supplier ini akan dihapus secara otomatis",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Lanjut",
+                closeOnConfirm: false,
+                showLoaderOnConfirm: false,
+             },function()
+             {
+                swal(
+   				{
+   					title: "Konfirmasi Penghapusan "+supname,
+   					text: "Silahkan Ketik 'HAPUS'",
+   					type: "input",
+   					showCancelButton: true,
+   					closeOnConfirm: false,
+   					animation: "slide-from-top",
+   					inputPlaceholder: "Silahkan Ketik 'HAPUS'",
+   					showLoaderOnConfirm: true,
+   				},function(inputValue)
+   				{
+   					if (inputValue === false) return false;
+   					if (inputValue != "HAPUS")
+   					{
+   						swal.showInputError("Silahkan Ketik 'HAPUS' ");
+   						return false
+   					}
+   					else
+   					{
+   						$.ajax(
+   		            {
+   		               type: "get",
+   		               url: url,
+   		               // data: url,
+   		               success: function(data)
+   		               {
+   		               }
+   		            }).done(function(data)
+   		            {
+                        var obj = jQuery.parseJSON(data);
+                        if(obj.err == false)
+                        {
+                           swal(
+                              {
+                                 title: "Success",
+                                 text: obj.msg,
+                                 type: "success",
+                                 showCancelButton: false,
+                                 // confirmButtonColor: "#DD6B55",
+                                 confirmButtonText: "OK",
+                                 closeOnConfirm: false
+                              }, function()
+                              {
+                                 window.location.href = window.location.href;
+                                 // location.reload();
+                              });
+                        }
+                        else
+                        {
+                           swal(
+                              {
+                                 title: "Gagal",
+                                 text: obj.msg,
+                                 type: "warning",
+                                 showCancelButton: false,
+                                 // confirmButtonColor: "#DD6B55",
+                                 confirmButtonText: "OK",
+                                 closeOnConfirm: true
+                              });
+                        }
+   		            }).error(function(data)
+   		            {
+   		               swal("Oops", "We couldn't connect to the server!", "error");
+   		            });
+   					}
+
+   				});
+             });
+          }
+       });
      });
      </script>
 @endsection

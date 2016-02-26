@@ -46,23 +46,24 @@ Route::any('/supplier/add','MainController@addSupplier');
 Route::post('/supplier/add/store','MainController@storeSupplier');
 Route::any('/storage/add/','ItemController@addItem');
 Route::post('/storage/add/store','ItemController@storeItem');
-Route::any('/storage/out/item={id}', 'ItemController@getItemData');
-Route::any('/storage/out/', 'ItemController@showOutPage');
-Route::post('/storage/out/keluaringihsono', 'ItemController@itemOut');
+// Route::any('/storage/out/item={id}', 'ItemController@getItemData');
+// Route::any('/storage/out/', 'ItemController@showOutPage');
+// Route::post('/storage/out/keluaringihsono', 'ItemController@itemOut');
 Route::get('/storage/show/{id}', 'ItemController@show');
 Route::post('/storage/update/', 'ItemController@update');
 // Route::get('/storage/delete', 'ItemController@destroy');
 Route::get('/storage/delete/{id}', 'ItemController@destroy');
+Route::get('/supplier/delete/{id}', 'MainController@destroySuppplier');
 
 Route::get('/finance/usersJSON/{id}',"FinanceController@getUsersForIv");
 
 Route::any('/finance',"FinanceController@index");
-Route::any('/finance/invoice',"FinanceController@createInvoice");
-Route::any('/finance/invoice/store',"FinanceController@storeInvoice");
-Route::any('/finance/invoice/{id}',"FinanceController@showInvoice");
-Route::get('/finance/usersJSON/{id}',"FinanceController@getUsersForIv");
-Route::any('/finance/invoices',"FinanceController@showInvoices");
-Route::get('/finance/srcinvoice/{id}',"FinanceController@srcInvoice");
+// Route::any('/finance/invoice',"FinanceController@createInvoice");
+// Route::any('/finance/invoice/store',"FinanceController@storeInvoice");
+// Route::any('/finance/invoice/{id}',"FinanceController@showInvoice");
+// Route::get('/finance/usersJSON/{id}',"FinanceController@getUsersForIv");
+// Route::any('/finance/invoices',"FinanceController@showInvoices");
+// Route::get('/finance/srcinvoice/{id}',"FinanceController@srcInvoice");
 
 
 Route::any('/iv','MainController@sampInvoice');
@@ -96,4 +97,9 @@ Route::get('/profile', 'UserController@profile');
 Route::post('/profile/updateinfo', 'UserController@profileUpdateInfo');
 Route::post('/profile/changepassword', 'UserController@profileChangePassword');
 Route::post('/profile/updateimage', 'UserController@updateAvatar');
+
 Route::any('/user/list', 'UserController@index');
+Route::any('/user/create', 'UserController@create');
+Route::any('/user/store', 'UserController@store');
+
+Route::any('/storage/restock_report', 'MainController@itemInReport');

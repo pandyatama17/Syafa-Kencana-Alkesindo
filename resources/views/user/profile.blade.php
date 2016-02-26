@@ -107,9 +107,9 @@
                             </div>
                         </div>
                         <div class="ibox-content">
-                            <form class="form-horizontal" id="updateInfoForm" method="post" action="{!! action('UserController@profileUpdateInfo') !!}">
+                            <form class="form-horizontal" id="updateInfoForm" method="POST" action="{!! action('UserController@profileUpdateInfo') !!}">
                                 <p>Ubah profil anda.</p>
-										  <input type="hidden" name="username" value="{{Session::get('user')->username}}">
+										  <input type="hidden" name="id" value="{{Session::get('user')->id}}">
                                 <div class="form-group">
 											  	<label class="col-lg-2 control-label">Username</label>
                                     <div class="col-lg-10">
@@ -129,7 +129,7 @@
 		                              	<span class="input-group-addon">
 		                                 	<i class="fa fa-calendar"></i>
 		                                  </span>
-		                                  <input type="text" class="form-control" value="{{date('Y-m-d')}}" name="birthdate">
+		                                  <input type="text" class="form-control" value="{{Session::get('user')->birthdate}}" name="birthdate">
 		                              </div>
 		                           </div>
 											<div class="form-group">
@@ -170,19 +170,19 @@
                                 <div class="form-group">
 											  	<label class="col-lg-2 control-label">Password Lama</label>
                                     <div class="col-lg-10">
-													<input type="password" name="password_old" class="form-control">
+													<input type="password" name="password_old" id="password_old" class="form-control">
                                     </div>
                                 </div>
 										  <div class="form-group fg-pass">
 											  	<label class="col-lg-2 control-label">Password Baru</label>
                                     <div class="col-lg-10">
-													<input type="password" name="password_1" id="password1" class="form-control">
+													<input type="password" name="password_1" id="password_1" class="form-control">
                                     </div>
                                 </div>
 										  <div class="form-group fg-pass">
 											  	<label class="col-lg-2 control-label">Ulangi Password Baru</label>
                                     <div class="col-lg-10">
-													<input type="password" name="password_2" id="password2" class="form-control">
+													<input type="password" name="password_2" id="password_2" class="form-control">
 													<span id="helperPassword" class="help-block m-b-none">Password tidak sama!</span>
                                     </div>
                                 </div>
@@ -207,145 +207,48 @@
 	  <script type="text/javascript">
 	  $(document).ready(function()
 	  {
-		//   $('#updateInfoForm').validate(
-		// 	{
-		// 			 rules:
-		// 			 {
-		// 				  id:
-		// 				  {
-		// 						required: true
-		// 				  },
-		// 			  },
-		// 			 highlight: function(label)
-		// 			 {
-		// 				  $(label).closest().addClass('error');
-		// 			 },
-		// 			 success: function(label)
-		// 			 {
-		// 				  label.closest().addClass('success');
-		// 			 },
-		// 			 submitHandler: function(form)
-		// 			 {
-		// 				  if ($(form).valid())
-		// 				  var url = $(this).attr('action');
-		// 				  var inputdata = $(this).serialize();
-		// 				  var formvar = $(form);
-		// 				  {
-		// 					  swal(
-		// 		           {
-		// 						  	title: "Konfirmasi Pengubahan Profil",
-		// 	  						text: "Silahkan masukkan password anda ",
-		// 		  					type: "input",
-		// 		  					showCancelButton: true,
-		// 		  					closeOnConfirm: false,
-		// 		  					animation: "slide-from-top",
-		// 		  					inputPlaceholder: "Silahkan masukkan password anda",
-		// 		  					showLoaderOnConfirm: true,
-		// 	  				},function(inputValue)
-		// 	  				{
-		// 						var password = '{{Session::get('user')->password}}';
-		// 	  					if (inputValue === false) return false;
-		// 	  					if (inputValue != password)
-		// 	  					{
-		// 	  						swal.showInputError("password salah! ");
-		// 	  						return false
-		// 	  					}
-		// 	  					else
-		// 	  					{
-		// 							formvar.ajaxSubmit(
-		// 							{
-		// 								 url: url,
-		// 								 type: 'POST',
-		// 								 data: inputdata,
-		// 								 success: function(data)
-		// 								 {
-		// 									  var obj = jQuery.parseJSON(data);
-		// 									  if(obj.err == false)
-		// 									  {
-		// 											swal(
-		// 											{
-		// 												 title: "Success!",
-		// 												 text: obj.msg,
-		// 												 type: "success",
-		// 												 confirmButtonColor: "#0288d1",
-		// 												 confirmButtonText: "Ok!",
-		// 												 closeOnConfirm: false
-		// 											},
-		// 											function()
-		// 											{
-		// 												 location.replace('/storage/list');
-		// 											});
-		// 											}
-		// 											else
-		// 											{
-		// 												 swal("Opps!", obj.msg, "error");
-		// 											}
-		// 									  }
-		// 								})
-		// 								return false;
-		// 							}
-		// 						});
-		// 				}
-		// 			}
-		// 		});
-		$('#updateInfoForm').validate(
-          {
-              rules:
-              {
-                  username:
-                  {
-                          required: true
-                  },
-
-              },
-              highlight: function(label)
-              {
-                  $(label).closest().addClass('error');
-              },
-              success: function(label)
-              {
-                  label.closest().addClass('success');
-              },
-              submitHandler: function(form)
-              {
-                  if ($(form).valid())
-                  {
-                      $(form).ajaxSubmit(
-                      {
-                          url:$(this).attr('action'),
-                          type: 'POST',
-                          data: $(this).serialize(),
-                          success: function(data)
-                          {
-                              var obj = jQuery.parseJSON(data);
-                              if(obj.err == false)
-                              {
-                                  swal(
-                                  {
-                                      title: "Success!",
-                                      text: obj.msg,
-                                      type: "success",
-                                      confirmButtonColor: "#0288d1",
-                                      confirmButtonText: "Ok!",
-                                      closeOnConfirm: false
-                                  },
-                                  function()
-                                  {
-                                      location.replace('/storage/list');
-                                  });
-                                  }
-                                  else
-                                  {
-                                      swal("Opps!", obj.msg, "error");
-                                  }
-                              }
-                          })
-                          return false;
-                      }
-                  }
-              });
-	  });
-	  $('#changeAvatarForm').validate(
+		  	$('#changePasswordForm').validate(
+			{
+   			submitHandler: function(form)
+   			{
+   				if ($(form).valid())
+   				{
+   					$(form).ajaxSubmit(
+   					{
+   						url:$(this).attr('action'),
+   						type: 'POST',
+   						data: $(this).serialize(),
+   						success: function(data)
+   						{
+   							var obj = jQuery.parseJSON(data);
+   							if(obj.err == false)
+   							{
+   								swal(
+   								{
+   									title: "Success!",
+   									text: obj.msg,
+   									type: "success",
+   									confirmButtonColor: "#0288d1",
+   									confirmButtonText: "Ok!",
+   									closeOnConfirm: true
+   								},function()
+									{
+										$("#password_old").val('');
+										$("#password_1").val('');
+   									$("#password_2").val('');
+   								});
+   							}
+   							else
+   							{
+   								swal("Opps!", obj.msg, "error");
+   							}
+   						}
+   					})
+   					return false;
+   				}
+   			}
+   		});
+	  		$('#changeAvatarForm').validate(
 			{
 				 submitHandler: function(form)
 				 {
@@ -427,5 +330,6 @@
 					  autoclose: true,
 					  format: 'yyyy-mm-dd'
 				 });
+		});
 	  </script>
 @endsection

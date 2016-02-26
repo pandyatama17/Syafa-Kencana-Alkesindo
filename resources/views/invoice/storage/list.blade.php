@@ -70,7 +70,7 @@
                             @endforeach
                         </tbody>
                         <tfoot>
-                        <tr>
+                        <tr class="tableRows">
                            <th class="tablehead">Invoice ID</th>
                            <th class="tablehead">Invoice Date</th>
                            <th class="tablehead">Due Date</th>
@@ -123,7 +123,7 @@ responsive: true,
 }
 });
 
-$("tr").click(function()
+$(".tableRows").click(function()
 {
    var url = $(this).data('href');
 
