@@ -28,8 +28,8 @@
 					  <div class="middle-box text-center animated fadeIn">
 							{{-- <h3 class="font-bold">This is page content</h3> --}}
 
-							<div class="error-desc">
-								 <img src="{{asset('/SKA_Logo.png')}}" alt="SKA LOGO" style="background: #F3F3F4; width:100%; height:100%" />
+							<div class="error-desc" @if(!Session::has('user')) style="margin-top:100px" @endif>
+								 <img src="{{asset('/SKA_BIG.png')}}" alt="SKA LOGO" style="background: #F3F3F4; width:100%; height:100%" />
 							</div>
 					  </div>
 					  @if(Session::has('user'))

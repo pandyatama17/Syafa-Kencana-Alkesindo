@@ -10,9 +10,15 @@
                <li>
 						<a href="{{url()}}">SKA</a>
 					</li>
-               {{-- <li>
-						<a href="{{url()}}/storage">Gudang</a>
-					</li> --}}
+               <li>
+                  @if(Session::get('user')->user_level == 'gudang')
+                     <a href="{{url('storage')}}">Gudang</a>
+                  @elseif(Session::get('user')->user_level == 'admin')
+                     <a href="{{url('finance')}}">Finance</a>
+                  @elseif(Session::get('user')->user_level == 'owner')
+                     <a href="{{url('owner')}}">Owner</a>
+                  @endif
+               </li>
 					<li class="active">
 						<strong>Supplier</strong>
 					</li>

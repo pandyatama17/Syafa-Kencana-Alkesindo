@@ -19,7 +19,7 @@
                  <button type="button" name="printButton" class="button blue" id="printBtn">Print</button>&nbsp;&nbsp;&nbsp;
              </li>
              <li style="float:right">
-                 <button type="button" name="backButton" class="button red" onclick="history.back(-1)">Back</button>
+                 <button type="button" name="backButton" class="button red" onclick="history.back(-2)">Back</button>
              </li>
            </ul>
         {{-- </div> --}}
@@ -97,9 +97,11 @@
                 <td>Discount</td>
                 <td>Subtotal</td>
             </tr>
+            <?php $x = 0;?>
             @foreach($ivchilds as $child)
+               <?php $x++ ?>
                <tr>
-                  <td>{{$child->id}}</td>
+                  <td>{{$x}}</td>
                   <td>{{$child->item_id}}</td>
                   <td>{{DB::table('item')->where('id', $child->item_id)->pluck('item_name')}}</td>
                   <td>{{$child->qty}} item</td>

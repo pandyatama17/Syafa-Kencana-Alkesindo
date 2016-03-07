@@ -9,7 +9,11 @@
                <a href="{{url()}}">SKA</a>
             </li>
             <li>
-               <a href="{{url('finance')}}">Finance</a>
+               @if(Session::get('user')->user_level == 'admin')
+                  <a href="{{url('finance')}}">Finance</a>
+               @elseif(Session::get('user')->user_level == 'owner')
+                  <a href="{{url('owner')}}">Owner</a>
+               @endif
             </li>
             <li class="active">
                <strong>Invoice</strong>
@@ -53,7 +57,7 @@
                                   <td>{{$iv->client_address}}</td>
                                   <td>{{$iv->sales}}</td>
                                   <td>{{$iv->payment}}</td>
-                                  <td>{{$iv->PIC}}</td>
+                                  <td>{{DB::table('user')->where('id',$iv->PIC)->pluck('name')}}</td>
                                </tr>
                             @endforeach
                         </tbody>

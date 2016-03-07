@@ -80,7 +80,7 @@ class FinanceCOntroller extends Controller {
         {
             $do = DeliveryOrder::where('DO_id','=',$input['do_id'])->update(['status'=>'ok','admin_id'=>$activeuser]);
             $itemout->save();
-            $arr = array('err'=>false,'msg'=>'You created the Invoice!','id' => $itemout->id);
+            $arr = array('err'=>false,'msg'=>'Invoice sukses dibuat!','id' => $itemout->id);
 			echo json_encode($arr);
 		}
 		catch (Exception $e)

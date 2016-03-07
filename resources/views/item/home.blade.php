@@ -9,7 +9,7 @@
 						<a href="{{url()}}">SKA</a>
 					</li>
 					<li class="active">
-						<strong>Storage</strong>
+						<strong>Gudang</strong>
 					</li>
 				</ol>
 		</div>
@@ -79,7 +79,7 @@
 						 <div class="col-lg-3"></div>
 						 <div class="col-lg-6">
                        <div class="text-center contact-box centerBtn pomegranate" data-animation="bounce">
-                           <a href="/invoice/pending">
+                           <a href="{{url('storage/invoice/list')}}">
                               <br>
                               <br>
                               <br>

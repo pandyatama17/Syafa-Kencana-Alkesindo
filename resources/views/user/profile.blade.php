@@ -176,13 +176,13 @@
 										  <div class="form-group fg-pass">
 											  	<label class="col-lg-2 control-label">Password Baru</label>
                                     <div class="col-lg-10">
-													<input type="password" name="password_1" id="password_1" class="form-control">
+													<input type="password" name="password_new" id="password_new" class="form-control">
                                     </div>
                                 </div>
 										  <div class="form-group fg-pass">
 											  	<label class="col-lg-2 control-label">Ulangi Password Baru</label>
                                     <div class="col-lg-10">
-													<input type="password" name="password_2" id="password_2" class="form-control">
+													<input type="password" name="password_repeat" id="password_repeat" class="form-control">
 													<span id="helperPassword" class="help-block m-b-none">Password tidak sama!</span>
                                     </div>
                                 </div>
@@ -213,38 +213,47 @@
    			{
    				if ($(form).valid())
    				{
-   					$(form).ajaxSubmit(
-   					{
-   						url:$(this).attr('action'),
-   						type: 'POST',
-   						data: $(this).serialize(),
-   						success: function(data)
-   						{
-   							var obj = jQuery.parseJSON(data);
-   							if(obj.err == false)
-   							{
-   								swal(
-   								{
-   									title: "Success!",
-   									text: obj.msg,
-   									type: "success",
-   									confirmButtonColor: "#0288d1",
-   									confirmButtonText: "Ok!",
-   									closeOnConfirm: true
-   								},function()
-									{
-										$("#password_old").val('');
-										$("#password_1").val('');
-   									$("#password_2").val('');
-   								});
-   							}
-   							else
-   							{
-   								swal("Opps!", obj.msg, "error");
-   							}
-   						}
-   					})
-   					return false;
+						if($("#password_new").val() == $("#password_repeat").val())
+						{
+	   					$(form).ajaxSubmit(
+	   					{
+	   						url:$(this).attr('action'),
+	   						type: 'POST',
+	   						data: $(this).serialize(),
+	   						success: function(data)
+	   						{
+	   							var obj = jQuery.parseJSON(data);
+	   							if(obj.err == false)
+	   							{
+	   								swal(
+	   								{
+	   									title: "Success!",
+	   									text: obj.msg,
+	   									type: "success",
+	   									confirmButtonColor: "#0288d1",
+	   									confirmButtonText: "Ok!",
+	   									closeOnConfirm: true
+	   								},function()
+										{
+											$("#password_old").val('');
+											$("#password_new").val('');
+	   									$("#password_repeat").val('');
+	   								});
+	   							}
+	   							else
+	   							{
+	   								swal("Opps!", obj.msg, "error");
+	   							}
+	   						}
+	   					})
+	   					return false;
+						}
+						else
+						{
+							swal("Opps!", 'Password Tidak Sama!', "error");
+							console.log($("#password_new").val()+' sama '+$("#password_repeat").val());
+							$(".fg_pass").addClass("has-error");
+						}
    				}
    			}
    		});

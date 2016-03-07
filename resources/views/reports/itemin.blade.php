@@ -3,16 +3,20 @@
 @section('content')
 <div class="row wrapper border-bottom white-bg page-heading">
    <div class="col-sm-4">
-      <h2>Data Invoice</h2>
+      <h2>Data Barang Masuk</h2>
          <ol class="breadcrumb">
             <li>
                <a href="{{url()}}">SKA</a>
             </li>
             <li>
-               <a href="{{url('finance')}}">Finance</a>
+               @if(Session::get('user')->user_level == 'gudang')
+                  <a href="{{url('storage')}}">Gudang</a>
+               @elseif(Session::get('user')->user_level == 'owner')
+                  <a href="{{url('owner')}}">Owner</a>
+               @endif
             </li>
             <li class="active">
-               <strong>Invoice</strong>
+               <strong>Data Barang Masuk</strong>
             </li>
          </ol>
    </div>

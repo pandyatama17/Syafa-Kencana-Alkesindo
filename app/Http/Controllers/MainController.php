@@ -60,7 +60,7 @@ class MainController extends Controller {
 			try
 			{
 				$sup->save();
-				$arr = array('err'=>false,'msg'=>'You has been sucessfully added new Supplier.');
+				$arr = array('err'=>false,'msg'=>'Supplier terdaftar!');
 				echo json_encode($arr);
 			}
 			catch (Exception $e)
@@ -95,11 +95,11 @@ class MainController extends Controller {
 		      // echo $it->id;
 		   }
 			$sup->delete();
-		   $foo = array('msg'=>'Supplier deleted!', 'err'=>false);
+		   $foo = array('msg'=>'Supplier telah dihapus!', 'err'=>false);
 		   echo json_encode($foo);
 		}
 		else {
-			$foo = array('msg'=>'there are still items left from '.$sup->supplier_name.' !', 'err'=>true);
+			$foo = array('msg'=>'Masih ada barang tersisa dari '.$sup->supplier_name.' !', 'err'=>true);
 		   echo json_encode($foo);
 		}
 	}
@@ -145,5 +145,8 @@ class MainController extends Controller {
 	{
 		//
 	}
-
+	public function owner()
+	{
+		return view('owner.home');
+	}
 }

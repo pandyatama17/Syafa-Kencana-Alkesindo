@@ -11,7 +11,10 @@
                <a href="{{url()}}">SKA</a>
             </li>
             <li>
-               <a href="#" id="UserToggle">User</a>
+               <a href="{{url('owner')}}">Owner</a>
+            </li>
+            <li>
+               <a href="{{url('user/list')}}">User</a>
             </li>
             <li class="active">
                <strong>Daftar User</strong>

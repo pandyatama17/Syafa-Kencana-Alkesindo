@@ -11,9 +11,13 @@
 					<li>
 						<a href="{{url()}}">SKA</a>
 					</li>
-   				<li>
-   					<a href="{{url()}}">Gudang</a>
-   				</li>
+               <li>
+                  @if(Session::get('user')->user_level == 'gudang')
+                     <a href="{{url('storage')}}">Gudang</a>
+                  @elseif(Session::get('user')->user_level == 'owner')
+                     <a href="{{url('owner')}}">Owner</a>
+                  @endif
+               </li>
 					<li class="active">
 						<strong>Tambah Barang Baru</strong>
 					</li>
@@ -139,7 +143,8 @@
                 keyboardNavigation: false,
                 forceParse: false,
                 calendarWeeks: true,
-                autoclose: true
+                autoclose: true,
+                format: 'yyyy-mm-dd'
             });
     $('#addItemForm').validate(
         {

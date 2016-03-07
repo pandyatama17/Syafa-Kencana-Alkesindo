@@ -2,7 +2,6 @@
 
 @section('content')
 {{-- <link rel="stylesheet" href="{{asset('assets/css/plugins/datapicker/datepicker3.css')}}"> --}}
-
 <div class="row wrapper border-bottom white-bg page-heading">
    <div class="col-sm-4">
       <h2>Tambah User Baru</h2>
@@ -11,7 +10,10 @@
             <a href="{{url()}}">SKA</a>
          </li>
          <li>
-            <a href="{{url()}}">User</a>
+            <a href="{{url('owner')}}">Owner</a>
+         </li>
+         <li>
+            <a href="{{url('user/list')}}">User</a>
          </li>
          <li class="active">
             <strong>Tambah User Baru</strong>
@@ -29,7 +31,7 @@
                      <h5>Tambah User</h5>
                   </div>
                   <div class="ibox-content">
-                     <form class="form-horizontal" id="adduserform" action="{{action('UserController@store')}}">
+                     <form class="form-horizontal" id="aaaddUserForm" action="{{action('UserController@store')}}">
                         {{-- Username Input Start--}}
                         <div class="form-group">
                            <label class="col-lg-2 control-label">Username</label>
@@ -103,6 +105,11 @@
 <script src="{{asset('jquery.validate.min.js')}}"></script>
 <script src="{{asset('swal/dist/sweetalert.min.js')}}"></script>
 <script src="{{asset('jquery.form.js')}}"></script>
+@if(Session::has('msg'))
+<script type="text/javascript">
+swal('success','{{Session::get('msg')}}','success');
+</script>
+@endif
 <script type="text/javascript">
 $(document).ready(function()
 {
@@ -114,7 +121,7 @@ $(document).ready(function()
       autoclose: true,
       format: 'yyyy-mm-dd'
    });
-   $('#adduserform').validate(
+   $('#addUserForm').validate(
    {
       submitHandler: function(form)
       {

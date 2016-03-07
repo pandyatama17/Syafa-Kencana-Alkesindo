@@ -13,8 +13,15 @@
 					<li>
 						<a href="{{url()}}">SKA</a>
 					</li>
+					<li>
+	               @if(Session::get('user')->user_level == 'gudang')
+	                  <a href="{{url('storage')}}">Gudang</a>
+	               @elseif(Session::get('user')->user_level == 'owner')
+	                  <a href="{{url('owner')}}">Owner</a>
+	               @endif
+	            </li>
 					<li class="active">
-						<strong>Home</strong>
+						<strong>Barang Masuk</strong>
 					</li>
 				</ol>
 		</div>
@@ -30,7 +37,6 @@
 			<div class="col-lg-12">
 				 <div class="wrapper wrapper-content">
 					  <div class="box animated fadeInRightBig">
-							<h3 class="font-bold">This is page content</h3>
 							<form class="form-horizontal" method="post" action="{{ action('ItemController@itemInSave') }}" id="restockForm">
 								{{-- PO Input --}}
 								<div class="form-group">

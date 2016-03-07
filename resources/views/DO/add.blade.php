@@ -248,6 +248,9 @@
                        @if(isset($child[$i-1]))
                           <input type="text" style="display:none" id="price{{$i}}" name="price{{$i}}" value="{{DB::table('item')->where('id',$child[$i-1]->item_id )->pluck('resell_price')}}">
                           <input type="text" style="display:none" name="subtotal{{$i}}" id="subtotal{{$i}}" value="{{$child[$i-1]->subtotal}}">
+                          @if(isset($total))                             
+                             <input type="text" style="display:none" name="total" id="total" value="{{$total}}">
+                          @endif
                        @endif
                     </td>
                 </tr>

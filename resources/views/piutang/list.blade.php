@@ -9,7 +9,11 @@
                <a href="{{url()}}">SKA</a>
             </li>
             <li>
-               <a href="{{url('finance')}}">Finance</a>
+               @if(Session::get('user')->user_level == 'admin')
+                  <a href="{{url('finance')}}">Finance</a>
+               @elseif(Session::get('user')->user_level == 'owner')
+                  <a href="{{url('owner')}}">Owner</a>
+               @endif
             </li>
             <li class="active">
                <strong>{{$pagin}}</strong>
@@ -78,7 +82,7 @@
                                   <td style="{{$cssclass}}">
                                      <a href="{{url('invoice/show/'.$ptg->invoice_parent_id)}}">
                                         <i class="fa fa-file-text"></i>
-                                     </a> 
+                                     </a>
                                      @if($pagin != "Piutang Lunas")
                                         |<a class="check" id="{{$ptg->invoice_parent_id}}" data-href="@if($ptg->status != 'ok') {{url('piutang/check/'.$ptg->id)}}@endif">
                                            <i class="checkicon

@@ -115,11 +115,11 @@ class UserController extends Controller {
 		$inp = Input::all();
 		if ($req->password_old == Session::get('user')->password)
 		{
-			if($req->password_1 == $req->password_2)
+			if($req->password_new == $req->password_repeat)
 			{
 				$user = User::find(Session::get('user')->id);
 
-				$user->password = $req->password_1;
+				$user->password = $req->password_new;
 
 				Session::forget('user');
 				Session::put('user', $user);
@@ -152,19 +152,17 @@ class UserController extends Controller {
 		{
 			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
 		}
-			try
+			if (Input::hasFile('image'))
 			{
 				$user = User::find(Session::get('user')->id);
 
-				if (Input::hasFile('image'))
-				{
+
 					$file     = Input::file('image');
-					$filename = $req->image.'.'.$file->getClientOriginalExtension();
+					$filename = $user->id.'.'.$file->getClientOriginalExtension();
 
 					$destinationPath = public_path().'/img/user';
 					$file->move($destinationPath, $filename);
 					$user->avatar = $filename;
-				}
 				$user->save();
 				// Session::push('user','avatar') = $filename;
 				Session::forget('user');
@@ -173,7 +171,7 @@ class UserController extends Controller {
 				$arr = array('err'=>false,'msg'=>'Avatar Profil telah diupdate!');
 				echo json_encode($arr);
 			}
-			catch(Exception $e)
+			else
 			{
 				$arr = array('err'=>true,'msg'=>'Error');
 				echo json_encode($arr);
@@ -227,11 +225,19 @@ class UserController extends Controller {
 		{
 			$user->save();
 
-			echo json_encode(array('err'=>false,'msg'=>'User Telah Teradaftar!'));
+			// echo json_encode(array('err'=>false,'msg'=>'User Telah Teradaftar!'));
+			return Redirect::to(action('UserController@create'))
+			->with('msg', 'User Terdaftar!')
+			->with('mestype', 'success')
+			->with('mestitle', 'Success!');
 		}
 		catch (Exception $e)
 		{
-			echo json_encode(array('err'=>false,'msg'=>'User Tidak Dapat Didaftarkan!'));
+			return Redirect::to(action('UserController@create'))
+			->with('msg', 'User Tidak Dapat Didaftarkan!')
+			->with('mestype', 'error')
+			->with('mestitle', 'Error!');
+			// echo json_encode(array('err'=>false,'msg'=>'User Tidak Dapat Didaftarkan!'));
 		}
 
 	}

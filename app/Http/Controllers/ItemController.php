@@ -75,7 +75,8 @@ class ItemController extends Controller {
 		$trans->transaction_type = $input['transaction_type'];
 		$trans->supplier_id = $item->supplier_id;
 
-		$item->qty = $input['qty'];
+		$qty = $item->qty + $input['qty'];
+		$item->qty = $qty;
 		$item->last_restock_date = $input['transaction_date'];
 
 		$sup->last_supply_date = $input['transaction_date'];
@@ -119,17 +120,16 @@ class ItemController extends Controller {
 		}
 			$ip = Input::all();
 
+			$it = new Item;
 			if (Input::hasFile('image'))
 			{
 				$file     = Input::file('image');
-				$filename = $ip['id'].'.'.$file->getClientOriginalExtension();
+				$file_name = $ip['id'].'.'.$file->getClientOriginalExtension();
 
 				$destinationPath = public_path().'/img/item';
-			    $file->move($destinationPath, $filename);
-				 $it->image = $filename;
-
+			    $file->move($destinationPath, $file_name);
+				 $it->image = $file_name;
 			}
-			$it = new Item;
 			$it->id = $ip['id'];
 			$it->item_name = $ip['name'];
 			$it->qty = $ip['qty'];
@@ -163,7 +163,7 @@ class ItemController extends Controller {
 						$trans->save();
 						$sup->save();
 					}
-				$arr = array('err'=>false,'msg'=>'Item registered to Database');
+				$arr = array('err'=>false,'msg'=>'Barang terdaftar!');
 				echo json_encode($arr);
 			}
 			catch (Exception $e)
@@ -222,7 +222,7 @@ class ItemController extends Controller {
 			$trans->save();
 			// $sup->save();
 			$item->save();
-			$arr = array('err'=>false,'msg'=>'You has been sucessfully update item.');
+			$arr = array('err'=>false,'msg'=>'Barang sukses diubah!');
 			echo json_encode($arr);
 		}
 		catch (Exception $e)
@@ -319,7 +319,7 @@ class ItemController extends Controller {
         try
         {
             $do->save();
-            $arr = array('err'=>false,'msg'=>'You created the Delivery Order!');
+            $arr = array('err'=>false,'msg'=>'Delivery Order sukses dibuat!');
 			echo json_encode($arr);
 		}
 		catch (Exception $e)
@@ -398,7 +398,7 @@ class ItemController extends Controller {
 			{
 					$it->save();
 
-					$arr = array('err'=>false,'msg'=>'Item details updated','itemid'=>$it->id);
+					$arr = array('err'=>false,'msg'=>'detail barang sukses diubah!','itemid'=>$it->id);
 					echo json_encode($arr);
 			}
 			catch (Exception $e)

@@ -69,7 +69,7 @@ class DOController extends Controller {
 		$childs = InvoiceChild::where('parent_id',$iv->id)->get();
 		$countchild = DB::table('invoice_child')->where('parent_id',$iv->id)->count();
 		$total = DB::table('piutang')->where('invoice_parent_id', $iv->id)->pluck('total');
-		return view('DO.add',array('sales'=>$sales))->with('items', $items)->with('id', $id)->with('iv', $iv)->with('countchild', $countchild)->with('child', $childs)->with('invoicetotal', $total);
+		return view('DO.add',array('sales'=>$sales))->with('items', $items)->with('id', $id)->with('iv', $iv)->with('countchild', $countchild)->with('child', $childs)->with('invoicetotal', $total)->with('total', $total);
 		// return $total	;
 	}
 	public function createWithItem($id)
@@ -111,7 +111,7 @@ class DOController extends Controller {
 				'sales' => $request->sales,
 				'payment' => $request->payment,
 				'total' => $request->total,
-				'PIC' => $request->t
+				'PIC' => $request->user
 			]);
 
 			$iv = InvoiceParent::find($request->parent_id);
@@ -301,7 +301,7 @@ class DOController extends Controller {
 			}
 			$iv->save();
 			// echo "yahman!";
-			return Redirect::to('/deliveryordero/show/'.$request->parent_id);
+			return Redirect::to('/deliveryorder/show/'.$request->parent_id);
 		}
 		catch (Exception $e)
 		{
@@ -321,11 +321,12 @@ class DOController extends Controller {
 		{
 			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
 		}
-		$do = InvoiceParent::find($id);
+		$do = DeliveryOrder::find($id);
 		$dochild = DoChild::where('parent_id',$do->id)->get();
 		// $piutang = Piutang::where('invoice_parent_id',$id)->pluck('total');
 
 		return view('DO.show',array('do'=>$do, 'dochilds'=> $dochild));
+		// return $do;
 	}
 
 	/**

@@ -4,16 +4,25 @@
 @section('content')
 	<div class="row wrapper border-bottom white-bg page-heading">
 		<div class="col-sm-4">
-         <h2>Daftar Supplier Baru</h2>
+         <h2>Tambah Supplier Baru</h2>
 				<ol class="breadcrumb">
                <li>
 						<a href="{{url()}}">SKA</a>
 					</li>
+					<li>
+	               @if(Session::get('user')->user_level == 'gudang')
+	                  <a href="{{url('storage')}}">Gudang</a>
+	               @elseif(Session::get('user')->user_level == 'admin')
+	                  <a href="{{url('finance')}}">Finance</a>
+	               @elseif(Session::get('user')->user_level == 'owner')
+	                  <a href="{{url('owner')}}">Owner</a>
+	               @endif
+	            </li>
                <li>
 						<a href="{{url()}}/supplier">Supplier</a>
 					</li>
 					<li class="active">
-						<strong>Daftar Supplier Baru</strong>
+						<strong>Tambah Supplier Baru</strong>
 					</li>
 				</ol>
 		</div>

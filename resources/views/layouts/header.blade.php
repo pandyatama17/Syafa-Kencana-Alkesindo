@@ -86,13 +86,13 @@
                               </li>
                               <li><a href="{{url('/storage/add')}}">Tambah Barang Baru</a></li>
                               <li><a href="{{url('/storage/restock')}}">Barang Masuk</a></li>
-                              <li><a href="{{url('/storage/restock_report')}}">Laporan Barang Masuk</a></li>
+                              <li><a href="{{url('/storage/restock_report')}}">Data Barang Masuk</a></li>
                           </ul>
                       </li>
                   @endif
                   @if(Session::get('user')->user_level == 'gudang')
                      <li>
-                       <a href="{{url('/storage/invoice/list')}}"><i class="fa fa-files-o"></i> <span class="nav-label">Data DO</span></a>
+                       <a href="{{url('/storage/invoice/list')}}"><i class="fa fa-files-o"></i> <span class="nav-label">Data Invoice </span></a>
                      </li>
                      <li>
                        <a href="{{url('/deliveryorder')}}"><i class="fa fa-file-text"></i> <span class="nav-label">Delivery Order</span></a>
@@ -101,6 +101,15 @@
                    <li>
                        <a href="{{url('/supplier')}}"><i class="fa fa-truck"></i> <span class="nav-label">Supplier</span></a>
                    </li>
+                   @if(Session::get('user')->user_level == 'owner')
+                      <li>
+                          <a href="#" id="NavbarPiutang"><i class="fa fa-users"></i> <span class="nav-label">Manajemen User</span> <span class="fa arrow"></span></a>
+                          <ul class="nav nav-second-level">
+                              <li><a href="{{url('user/list')}}">Daftar User</a></li>
+                              <li><a href="{{url('user/create')}}">Tambah User</a></li>
+                          </ul>
+                      </li>
+                   @endif
                 @endif
             </ul>
 
@@ -125,7 +134,7 @@
                            <i class="fa fa-sign-out"></i> Log out
                         </a>
                       @else
-                        <a href="/login">
+                        <a href="/login" style="color:white;">
                            <i class="fa fa-sign-in"></i> Log In
                         </a>
                       @endif

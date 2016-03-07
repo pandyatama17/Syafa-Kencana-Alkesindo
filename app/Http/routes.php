@@ -64,7 +64,7 @@ Route::any('/finance',"FinanceController@index");
 // Route::get('/finance/usersJSON/{id}',"FinanceController@getUsersForIv");
 // Route::any('/finance/invoices',"FinanceController@showInvoices");
 // Route::get('/finance/srcinvoice/{id}',"FinanceController@srcInvoice");
-
+Route::any('/owner', 'MainController@owner');
 
 Route::any('/iv','MainController@sampInvoice');
 Route::any('/sampDO','MainController@sampDO');

@@ -9,7 +9,7 @@
 						<a href="{{url()}}">SKA</a>
 					</li>
 					<li class="active">
-						<strong>Finance</strong>
+						<strong>Owner</strong>
 					</li>
 				</ol>
 		</div>
@@ -42,6 +42,18 @@
 			{
 				background-color: #d04233;
 			}
+         .greenSea
+         {
+            background-color: #16a085;
+         }
+         .wisteria
+         {
+            background-color: #8e44ad;
+         }
+         .orange
+         {
+            background-color: #f39c12;
+         }
       </style>
 	</div>
 	  <div class="row">
@@ -49,8 +61,8 @@
 				 <div class="wrapper wrapper-content">
 					  <div class="box animated fadeInUp">
                     <div class="col-lg-6">
-                       <div class="text-center contact-box centerBtn nephitris" data-animation="bounce">
-                           <a href="{{url('invoice')}}">
+                       <div class="text-center contact-box centerBtn nephitris" data-animation="pulse">
+                           <a href="{{url('invoice/list')}}">
                               <br>
                               <br>
                               <br>
@@ -63,7 +75,7 @@
                        </div>
                    </div>
                    <div class="col-lg-6">
-                       <div class="text-center contact-box centerBtn belizeHole" data-animation="bounce">
+                       <div class="text-center contact-box centerBtn belizeHole" data-animation="pulse">
                            <a href="{{url('deliveryorder')}}">
                               <br>
                               <br>
@@ -76,14 +88,55 @@
                           </a>
                        </div>
                    </div>
-						 <div class="col-lg-3"></div>
 						 <div class="col-lg-6">
-                       <div class="text-center contact-box centerBtn pomegranate" data-animation="bounce">
+                       <div class="text-center contact-box centerBtn pomegranate" data-animation="pulse">
                            <a href="{{url('piutang/all')}}">
                               <br>
                               <br>
                               <br>
                               <h2><i class="fa fa-usd"></i> Daftar Piutang</h2>
+                              <br>
+                              <br>
+                              <br>
+                             <div class="clearfix"></div>
+                          </a>
+                       </div>
+                   </div>
+                   <div class="col-lg-6">
+                       <div class="text-center contact-box centerBtn greenSea" data-animation="pulse">
+                           <a href="{{url('storage/list')}}">
+                              <br>
+                              <br>
+                              <br>
+                              <h2><i class="fa fa-dropbox"></i> Daftar Barang</h2>
+                              <br>
+                              <br>
+                              <br>
+                             <div class="clearfix"></div>
+                          </a>
+                       </div>
+                   </div>
+                   <div class="col-lg-6">
+                       <div class="text-center contact-box centerBtn wisteria" data-animation="pulse">
+                           <a href="{{url('supplier')}}">
+                              <br>
+                              <br>
+                              <br>
+                              <h2><i class="fa fa-truck"></i> Daftar Supplier</h2>
+                              <br>
+                              <br>
+                              <br>
+                             <div class="clearfix"></div>
+                          </a>
+                       </div>
+                   </div>
+                   <div class="col-lg-6">
+                       <div class="text-center contact-box centerBtn orange" data-animation="pulse">
+                           <a href="{{url('user/list')}}">
+                              <br>
+                              <br>
+                              <br>
+                              <h2><i class="fa fa-users"></i> Daftar User</h2>
                               <br>
                               <br>
                               <br>

@@ -1,7 +1,8 @@
 <!doctype html>
 <html>
 <head>
-    <script type="text/javascript" src="/materialize/dist/js/jquery-2.2.0.min.js"></script>
+      <script src="{{asset('assets/js/jquery-2.1.1.js')}}"></script>
+    {{-- <script type="text/javascript" src="/materialize/dist/js/jquery-2.2.0.min.js"></script> --}}
     {{-- <script type="text/javascript" src="/materialize/dist/js/materialize.min.js"></script> --}}
     {{-- <link type="text/css" rel="stylesheet" href="/materialize/dist/css/materialize.min.css"  media="screen,projection"/> --}}
 
@@ -88,9 +89,11 @@
                 <td>Discount</td>
                 <td>Subtotal</td>
             </tr>
+            <?php $x = 0;?>
             @foreach($dochilds as $child)
+               <?php $x++ ?>
                <tr>
-                  <td>{{$child->id}}</td>
+                  <td>{{$x}}</td>
                   <td>{{$child->item_id}}</td>
                   <td>{{DB::table('item')->where('id', $child->item_id)->pluck('item_name')}}</td>
                   <td>{{$child->qty}} item</td>
