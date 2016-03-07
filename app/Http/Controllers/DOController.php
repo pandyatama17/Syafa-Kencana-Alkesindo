@@ -20,13 +20,18 @@ use App\InvoiceParent;
 use App\InvoiceChild;
 use App\DoChild;
 
-class DOController extends Controller {
+class DOController extends Controller
+{
+	protected $sesspriv;
 
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return Response
-	 */
+	public function __construct()
+	{
+		$this->sesspriv = Session::get('user')->user_level;
+		if($this->sesspriv == 'admin')
+		{
+			$this->sesspriv = 'finance';
+		}
+	}
 	public function index()
 	{
 		if(!Session::has('user'))
@@ -38,22 +43,24 @@ class DOController extends Controller {
 		return view('DO.list')->with('dos', $dos);
 	}
 
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
 	public function create()
 	{
 		if(!Session::has('user'))
 		{
 			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
 		}
-		$sales = User::where('user_level','=','sales')->get();
-		$items = Item::all();
-		// print_r($items);
-		// return $items;
-		return view('DO.add',array('sales'=>$sales))->with('items', $items);
+		if(Session::get('user')->user_level == 'gudang' || Session::get('user')->user_level == 'owner' )
+		{
+			$sales = User::where('user_level','=','sales')->get();
+			$items = Item::all();
+			// print_r($items);
+			// return $items;
+			return view('DO.add',array('sales'=>$sales))->with('items', $items);
+		}
+		else
+		{
+			return Redirect::to(url($this->sesspriv))->with('priverror', 'Insufficient Privilege');
+		}
 	}
 	public function createWithInvoice($id)
 	{
@@ -61,16 +68,24 @@ class DOController extends Controller {
 		{
 			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
 		}
-		$sales = User::where('user_level','=','sales')->get();
-		$items = Item::all();
-		$iv  = InvoiceParent::find($id);
-		// print_r($items);
-		// return $items;
-		$childs = InvoiceChild::where('parent_id',$iv->id)->get();
-		$countchild = DB::table('invoice_child')->where('parent_id',$iv->id)->count();
-		$total = DB::table('piutang')->where('invoice_parent_id', $iv->id)->pluck('total');
-		return view('DO.add',array('sales'=>$sales))->with('items', $items)->with('id', $id)->with('iv', $iv)->with('countchild', $countchild)->with('child', $childs)->with('invoicetotal', $total)->with('total', $total);
-		// return $total	;
+		if(Session::get('user')->user_level == 'gudang' || Session::get('user')->user_level == 'owner' )
+		{
+			$sales = User::where('user_level','=','sales')->get();
+			$items = Item::all();
+			$iv  = InvoiceParent::find($id);
+			// print_r($items);
+			// return $items;
+			$childs = InvoiceChild::where('parent_id',$iv->id)->get();
+			$countchild = DB::table('invoice_child')->where('parent_id',$iv->id)->count();
+			$total = DB::table('piutang')->where('invoice_parent_id', $iv->id)->pluck('total');
+			return view('DO.add',array('sales'=>$sales))->with('items', $items)->with('id', $id)->with('iv', $iv)->with('countchild', $countchild)->with('child', $childs)->with('invoicetotal', $total)->with('total', $total);
+			// return $total	;
+		}
+		else
+		{
+			return Redirect::to(url($this->sesspriv))->with('priverror', 'Insufficient Privilege');
+		}
+
 	}
 	public function createWithItem($id)
 	{
@@ -78,13 +93,20 @@ class DOController extends Controller {
 		{
 			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
 		}
-		$sales = User::where('user_level','=','sales')->get();
-		$items = Item::all();
-		$item = Item::find($id);
-		$iv  = InvoiceParent::find($id);
-		// print_r($items);
-		// return $items;
-		return view('DO.add',array('sales'=>$sales))->with('items', $items)->with('iv', $iv);
+		if(Session::get('user')->user_level == 'gudang' || Session::get('user')->user_level == 'owner' )
+		{
+			$sales = User::where('user_level','=','sales')->get();
+			$items = Item::all();
+			$item = Item::find($id);
+			$iv  = InvoiceParent::find($id);
+			// print_r($items);
+			// return $items;
+			return view('DO.add',array('sales'=>$sales))->with('items', $items)->with('iv', $iv);
+		}
+		else
+		{
+			return Redirect::to(url($this->sesspriv))->with('priverror', 'Insufficient Privilege');
+		}
 	}
 
 	/**
@@ -98,6 +120,11 @@ class DOController extends Controller {
 		{
 			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
 		}
+		if ($this->sesspriv == 'finance')
+		{
+			return Redirect::to($this->sesspriv)->with('priverror', 'Insufficient Permission');
+		}
+
 		$inp = Input::all();
 		try
 		{

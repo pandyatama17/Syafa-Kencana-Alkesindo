@@ -8,47 +8,41 @@ use App\Supplier;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
+use Session;
 
 class MainController extends Controller {
 
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return Response
-	 */
-	public function index()
+	protected $sesspriv;
+	public function __construct()
 	{
-		$transaction = Transaction::orderBy('id','desc')->take(10)->get();
-		return view('home',array('transactions' => $transaction ));
+		$this->sesspriv = Session::get('user')->user_level;
+	  if($this->sesspriv == 'admin')
+	  {
+		  $this->sesspriv = 'finance';
+	  }
+	  elseif($this->sesspriv == 'gudang')
+	  {
+		  $this->sesspriv = 'storage';
+	  }
 	}
 
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
+	public function index()
+	{
+		return view('home');
+	}
+
 	public function supplier()
 	{
 		$suppliers = Supplier::all();
  		return view('supplier.list',array('suppliers'=>$suppliers,'page'=>'supplier'));
 	}
 
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
 	public function addSupplier()
 	{
 		return view('supplier.add',array('page'=>'supplier'));
 	}
 
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
+
 	public function storeSupplier()
 	{
 			$ip = Input::all();
@@ -71,7 +65,6 @@ class MainController extends Controller {
 
 	}
 
-
 	public function destroySuppplier($id)
 	{
 		$sup = Supplier::find($id);
@@ -83,16 +76,13 @@ class MainController extends Controller {
 		{
 		   array_push($arr, $res['qty']);
 		}
-		// print_r($arr);
 
 		if(!array_filter($arr))
 		{
 		   foreach ($items as $item)
 		   {
-		      // Item::destroy($item->id);
 				$it = Item::find($item->id);
 				$it->delete();
-		      // echo $it->id;
 		   }
 			$sup->delete();
 		   $foo = array('msg'=>'Supplier telah dihapus!', 'err'=>false);
@@ -103,23 +93,7 @@ class MainController extends Controller {
 		   echo json_encode($foo);
 		}
 	}
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		//
-	}
 
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
 	public function sampInvoice()
 	{
 		return view('reports.invoiceDummy');
@@ -133,20 +107,5 @@ class MainController extends Controller {
 		$trs = Transaction::all();
 
 		return view('reports.itemin')->with('trs', $trs);
-	}
-
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function destroy($id)
-	{
-		//
-	}
-	public function owner()
-	{
-		return view('owner.home');
 	}
 }

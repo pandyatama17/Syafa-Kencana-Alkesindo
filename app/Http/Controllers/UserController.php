@@ -8,20 +8,26 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
 use Session;
 
-class UserController extends Controller {
+class UserController extends Controller
+{
 
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return Response
-	 */
-	 public function __construct()
-	 {
-	 	if(!Session::has('user'))
+	protected $sesspriv;
+	public function __construct()
+	{
+		if (Session::has('user'))
 		{
-			redirect(url("login"));
+			$this->sesspriv = Session::get('user')->user_level;
+		  	if($this->sesspriv == 'admin')
+		  	{
+			  	$this->sesspriv = 'finance';
+		  	}
+		  	elseif($this->sesspriv == 'gudang')
+		  	{
+			  	$this->sesspriv = 'storage';
+		  	}
 		}
-	 }
+	}
+
 	public function showLogin()
 	{
 		return view('login');
@@ -40,7 +46,6 @@ class UserController extends Controller {
 		}
 
 				// attempt to do the login
-				// if (str_replace(' ','',$user->password) == sha1(Input::get('password'))) {
 					if($user->password == Input::get('password'))
 					{
 						Session::put('user',$user);
@@ -53,12 +58,10 @@ class UserController extends Controller {
 						elseif ($user->user_level == 'owner')
 						{
 							return Redirect::to('/');
-							# code...
 						}
 						elseif ($user->user_level == 'admin')
 						{
 							return Redirect::to('/finance');
-							# code...
 						}
 					}
 					else {
@@ -85,7 +88,6 @@ class UserController extends Controller {
 			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
 		}
 
-		// echo "<script>swal('ok','okeh')</script>";
 		$user = User::find($req->id);
 
 		$user->name = $req->name;
@@ -102,8 +104,6 @@ class UserController extends Controller {
 			return "fail!";
 		}
 
-		// return $req->address;
-		// return $req->username." ".$req->birthdate." ".$req->birthplace." ".$req->address.", id =".$req->id;
 	}
 
 	public function profileChangePassword(Request $req)
@@ -156,15 +156,14 @@ class UserController extends Controller {
 			{
 				$user = User::find(Session::get('user')->id);
 
+				$file     = Input::file('image');
+				$filename = $user->id.'.'.$file->getClientOriginalExtension();
 
-					$file     = Input::file('image');
-					$filename = $user->id.'.'.$file->getClientOriginalExtension();
+				$destinationPath = public_path().'/img/user';
+				$file->move($destinationPath, $filename);
+				$user->avatar = $filename;
 
-					$destinationPath = public_path().'/img/user';
-					$file->move($destinationPath, $filename);
-					$user->avatar = $filename;
 				$user->save();
-				// Session::push('user','avatar') = $filename;
 				Session::forget('user');
 				Session::put('user', $user);
 
@@ -181,7 +180,6 @@ class UserController extends Controller {
 
 	public function logout()
 	{
-		# code...
 		Session::forget('user');
 		return Redirect::to('/login');
 	}
@@ -191,26 +189,28 @@ class UserController extends Controller {
 		{
 			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
 		}
+		if ($this->sesspriv == 'finance' || $this->sesspriv == 'storage')
+		{
+			return Redirect::to($this->sesspriv)->with('priverror', 'Insufficient Permission');
+		}
 		$users = User::all();
 
 		return view('user.admin.list')->with('users', $users);
 	}
 
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
 	public function create()
 	{
+		if(!Session::has('user'))
+		{
+			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+		}
+		if ($this->sesspriv == 'finance' || $this->sesspriv == 'storage')
+		{
+			return Redirect::to($this->sesspriv)->with('priverror', 'Insufficient Permission');
+		}
 		return view('user.admin.create');
 	}
 
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
 	public function store(Request $req)
 	{
 		$user = new User;
@@ -225,7 +225,6 @@ class UserController extends Controller {
 		{
 			$user->save();
 
-			// echo json_encode(array('err'=>false,'msg'=>'User Telah Teradaftar!'));
 			return Redirect::to(action('UserController@create'))
 			->with('msg', 'User Terdaftar!')
 			->with('mestype', 'success')
@@ -237,50 +236,25 @@ class UserController extends Controller {
 			->with('msg', 'User Tidak Dapat Didaftarkan!')
 			->with('mestype', 'error')
 			->with('mestitle', 'Error!');
-			// echo json_encode(array('err'=>false,'msg'=>'User Tidak Dapat Didaftarkan!'));
 		}
 
 	}
 
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
 	public function show($id)
 	{
 		//
 	}
 
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
 	public function edit($id)
 	{
 		//
 	}
 
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
 	public function update($id)
 	{
 		//
 	}
 
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
 	public function destroy($id)
 	{
 		//

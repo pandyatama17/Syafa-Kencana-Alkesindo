@@ -23,12 +23,18 @@ class InvoiceController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function __construct()
+	 protected $sesspriv;
+	 public function __construct()
 	 {
-	 	if(!Session::has('user'))
-		{
-			return redirect(url("login"));
-		}
+		 $this->sesspriv = Session::get('user')->user_level;
+	   if($this->sesspriv == 'admin')
+	   {
+		   $this->sesspriv = 'finance';
+	   }
+		elseif($this->sesspriv == 'gudang')
+	   {
+		   $this->sesspriv = 'storage';
+	   }
 	 }
 
 	public function index()
@@ -52,29 +58,17 @@ class InvoiceController extends Controller {
 		{
 			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
 		}
+		if ($this->sesspriv == 'storage')
+		{
+			return Redirect::to($this->sesspriv)->with('priverror', 'Insufficient Permission');
+		}
  		$sales = User::where('user_level','=','sales')->get();
 		$items = Item::all();
 		// print_r($items);
 		// return $items;
 		return view('invoice.add',array('sales'=>$sales))->with('items', $items);
  	}
-	public function old()
-	{
-		if(!Session::has('user'))
-		{
-			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
-		}
-		$sales = User::where('user_level','=','sales')->get();
-		$items = Item::all();
-		return view('invoice.old',array('sales'=>$sales))->with('items', $items);
-	}
-
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
-	 public function getItemData($id)
+	public function getItemData($id)
 	 {
 		 if(!Session::has('user'))
 	   {
@@ -199,22 +193,15 @@ class InvoiceController extends Controller {
 		return $id;
 	}
 
-	public function store()
-	{
-		//
-	}
-
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
 	public function show($id)
 	{
 		if(!Session::has('user'))
 		{
 			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+		}
+		if ($this->sesspriv == 'storage')
+		{
+			return Redirect::to($this->sesspriv)->with('priverror', 'Insufficient Permission');
 		}
 		$iv = InvoiceParent::find($id);
 		$ivchild = InvoiceChild::where('parent_id',$iv->id)->get();
@@ -224,39 +211,7 @@ class InvoiceController extends Controller {
 		// return $piutang;
 
 	}
-
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		//
-	}
-
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($id)
-	{
-		//
-	}
-
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function destroy($id)
-	{
-		//
-	}
+	
 	public function listPending()
 	{
 		if(!Session::has('user'))

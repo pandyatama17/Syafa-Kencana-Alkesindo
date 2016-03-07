@@ -163,7 +163,11 @@
     <script src="{{asset('assets/js/plugins/pace/pace.min.js')}}"></script>
     <script src="{{asset('plugins/sf-flash/jquery.sf-flash.min.js')}}"></script>
     <script src="{{asset('swal/dist/sweetalert.min.js')}}"></script>
-
+@if(Session::has('priverror'))
+   <script type="text/javascript">
+      swal('Error!','{{Session::get('priverror')}}','error');
+   </script>
+@endif
 </body>
 
 </html>

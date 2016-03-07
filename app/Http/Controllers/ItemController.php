@@ -13,33 +13,46 @@ use File;
 use Session;
 use Redirect;
 
-class ItemController extends Controller {
+class ItemController extends Controller
+{
 
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return Response
-	 */
+	protected $sesspriv;
+	public function __construct()
+	{
+		$this->sesspriv = Session::get('user')->user_level;
+	  if($this->sesspriv == 'admin')
+	  {
+		  $this->sesspriv = 'finance';
+	  }
+	  elseif($this->sesspriv == 'gudang')
+	  {
+		  $this->sesspriv = 'storage';
+	  }
+	}
+
 	public function index()
 	{
 		if(!Session::has('user'))
 		{
 			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
 		}
+		if ($this->sesspriv == 'owner' || $this->sesspriv == 'finance')
+	  {
+		  return Redirect::to($this->sesspriv)->with('priverror', 'Insufficient Permission');
+	  }
 		$items = Item::all();
 		return view('item.home',array('items'=>$items,'page'=>''));
 	}
 
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
 	public function showlist()
  	{
 		if(!Session::has('user'))
 		{
 			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+		}
+		if ($this->sesspriv == 'finance')
+		{
+			return Redirect::to($this->sesspriv)->with('priverror', 'Insufficient Permission');
 		}
  		$items = Item::all();
  		return view('item.list',array('items'=>$items,'page'=>'list'));
@@ -50,6 +63,10 @@ class ItemController extends Controller {
 		if(!Session::has('user'))
 		{
 			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+		}
+		if ($this->sesspriv == 'finance')
+		{
+			return Redirect::to($this->sesspriv)->with('priverror', 'Insufficient Permission');
 		}
 		$items = Item::all();
 		return view('item.restock',array('items'=>$items,'page'=>'restock'));
@@ -102,16 +119,14 @@ class ItemController extends Controller {
 		{
 			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
 		}
+		if ($this->sesspriv == 'finance')
+		{
+			return Redirect::to($this->sesspriv)->with('priverror', 'Insufficient Permission');
+		}
 		$suppliers = Supplier::all();
 		return view('item.add',array('page'=>'list','suppliers' => $suppliers));
 	}
 
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
 	public function storeItem()
 	{
 		if(!Session::has('user'))
@@ -180,6 +195,7 @@ class ItemController extends Controller {
 		{
 			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
 		}
+
 		$input = Input::all();
 
 		if (!isset($input['chk']))
@@ -191,15 +207,11 @@ class ItemController extends Controller {
 			$do_id = $input['DO_inpsel'];
 		}
 
-
 		$item = Item::find($input['item_id']);
-
 
 		$oldqty = $item->qty;
 		$newqty = $input['qty'];
-
 		$realnewqty = $oldqty - $newqty ;
-		// $sup = Supplier::find($input['supplier']);
 
 		$trans = new Transaction;
 		$trans->PO_DO_id = $do_id;
@@ -208,19 +220,12 @@ class ItemController extends Controller {
 		$trans->item_qty = $input['qty'];
 		$trans->user = $input['user'];
 		$trans->transaction_type = 'out';
-		//
-		// $out = new Itemout;
-		// $out->DO = $input['DO'];
-		// $out->DO = $input['DO'];
 
 		$item->qty = $realnewqty;
 
-		// $sup->last_supply_date = $input['transaction_date'];
-		// $sup->last_supply_item_id = $input['item'];
 		try
 		{
 			$trans->save();
-			// $sup->save();
 			$item->save();
 			$arr = array('err'=>false,'msg'=>'Barang sukses diubah!');
 			echo json_encode($arr);
@@ -232,11 +237,6 @@ class ItemController extends Controller {
 		}
 	}
 
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
 	public function showOutPage()
 	{
 		if(!Session::has('user'))
@@ -247,110 +247,15 @@ class ItemController extends Controller {
 		return view ('item.out',array('items'=>$item,'page'=>'out'));
 	}
 
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function getItemData($id)
-	{
-		if(!Session::has('user'))
-		{
-			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
-		}
-		$id = Input::get('id');
-		$item = Item::find($id);
-		$trans = Transaction::where('transaction_type','out')->get();
-		return view ('item.outcontent',array('trs'=>$trans,'item'=>$item,'page'=>'out'));
-	}
-
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function createDO()
-	{
-		if(!Session::has('user'))
-		{
-			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
-		}
-        $trs = Transaction::where('transaction_type','out')->get();
-		return view ('item.createDO',array('trs'=>$trs,'page'=>'DO'));
-	}
-
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-     public function getItemsForDO($id)
-     {
-		  if(!Session::has('user'))
-  		{
-  			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
-  		}
-		 $items = Transaction::where('PO_DO_id', $id)->get();
-         echo json_encode($items);
-     }
-
-	public function storeDO()
-	{
-		if(!Session::has('user'))
-		{
-			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
-		}
-        $input = Input::all();
-        $activeuser = \Session::get('user')->id;
-
-        $do = new DeliveryOrder;
-        $do->DO_id = $input['do_id'];
-        $do->items_id_array = $input['items_id_array'];
-        $do->items_qty_array = $input['items_qty_array'];
-		$do->date = $input['date'];
-        $do->delivery_date = $input['delivery_date'];
-        $do->sender = $input['sender'];
-        $do->recipient = $input['recipient'];
-        $do->user = $activeuser;
-
-        try
-        {
-            $do->save();
-            $arr = array('err'=>false,'msg'=>'Delivery Order sukses dibuat!');
-			echo json_encode($arr);
-		}
-		catch (Exception $e)
-		{
-			$arr = array('err'=>true,'msg'=>'Invalid Proccess.');
-			echo json_encode($arr);
-		}
-
-	}
-    public function showDO($id)
-    {
-		 if(!Session::has('user'))
-	   {
-		   return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
-	   }
-        $do = DeliveryOrder::where('DO_id',$id)->get();
-
-        return view('reports.DO',array('deliveryorder'=>$do));
-    }
-
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
 	public function restockItem($id)
 	{
 		if(!Session::has('user'))
 		{
 			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+		}
+		if ($this->sesspriv == 'finance')
+		{
+			return Redirect::to($this->sesspriv)->with('priverror', 'Insufficient Permission');
 		}
 		$item = Item::find($id);
 		$items = Item::all();
@@ -361,6 +266,10 @@ class ItemController extends Controller {
 		if(!Session::has('user'))
 		{
 			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+		}
+		if ($this->sesspriv == 'finance')
+		{
+			return Redirect::to($this->sesspriv)->with('priverror', 'Insufficient Permission');
 		}
 		$it = Item::find($id);
 		$sups = SUpplier::all();
@@ -413,6 +322,10 @@ class ItemController extends Controller {
 		if(!Session::has('user'))
 		{
 			return Redirect::to(url('login'))->with('message', 'Silahkan Login terlebih dahulu!');
+		}
+		if ($this->sesspriv == 'finance')
+		{
+			return Redirect::to($this->sesspriv)->with('priverror', 'Insufficient Permission');
 		}
 		$it = Item::find($id);
 		try

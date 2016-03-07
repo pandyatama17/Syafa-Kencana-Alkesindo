@@ -6,13 +6,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>INSPINIA | 404 Error</title>
+    <title>Page Not Found</title>
 
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="{{asset('assets/css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{asset('assets/font-awesome/css/font-awesome.css')}}" rel="stylesheet">
 
-    <link href="css/animate.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
+    <link href="{{asset('assets/css/animate.css')}}" rel="stylesheet">
+    <link href="{{asset('assets/css/style.css')}}" rel="stylesheet">
 
 </head>
 
@@ -25,18 +25,20 @@
 
         <div class="error-desc">
             Sorry, but the page you are looking for has note been found. Try checking the URL for error, then hit the refresh button on your browser or try found something else in our app.
-            <form class="form-inline m-t" role="form">
+            {{-- <form class="form-inline m-t" role="form">
                 <div class="form-group">
                     <input type="text" class="form-control" placeholder="Search for page">
                 </div>
                 <button type="submit" class="btn btn-primary">Search</button>
-            </form>
+            </form> --}}
+            <br>
+            <a href="{{url()}}" class="btn btn-primary">Back to Homepage</a>
         </div>
     </div>
 
     <!-- Mainly scripts -->
-    <script src="js/jquery-2.1.1.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+    <script src="{{asset('assets/js/jquery-2.1.1.js')}}"></script>
+    <script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
 
 </body>
 
